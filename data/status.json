@@ -1,43 +1,43 @@
 {
- "last_run": "2026-10-30T13:43:17Z",
+ "last_run": "2026-10-30T18:50:13Z",
  "themes": [
   {
    "key": "tip",
-   "summary": "AI 영상통화·도구 가격 비교 등 활용 팁과 LLM 문체를 경계하라는 글쓰기 조언"
+   "summary": "AI 영상통화·도구 가격 비교 소개와 함께 LLM 문체 의존 경계 조언"
   },
   {
    "key": "agent",
-   "summary": "공공데이터 MCP 연결과 Claude Code 영업 자동화 실전기, 게임 속 에이전트 군집 실험"
+   "summary": "Claude Code로 영업 자동화 확장, 공공데이터 MCP·게임 속 에이전트 군집 실험"
   },
   {
    "key": "code",
-   "summary": "Claude Code·Codex 위에 캔버스·에디터·하네스 등 보조 도구가 쏟아지고 확장 백도어 경고도 나옴"
+   "summary": "Claude Code·Codex 중심 하네스·맥락 전달 도구 쏟아지고 확장 백도어 경고도"
   },
   {
    "key": "model",
-   "summary": "Mistral 대형 모델 오픈 웨이트 공개와 벤치마크 지수 개편의 고민이 함께 화제"
+   "summary": "Mistral Large 4 가중치 공개, Gemini 4 Carbon 제한 출시에 벤치마크 고민"
   },
   {
    "key": "research",
-   "summary": "초소형 월드 모델·저비용 LLM 학습 실험과 데이터 에이전트·AI 인용 통계의 한계 검증"
+   "summary": "초소형 월드 모델·저비용 LLM 학습 실험 속 데이터 에이전트·AI 인용 통계 한계 드러나"
   },
   {
    "key": "industry",
-   "summary": "OpenAI 한도 확대·인프라 확장 속 기업 내 AI 전환 갈등과 GPU 버블·초지능 사회 우려"
+   "summary": "AI 비용 우려에 기술주 하락·거품론 확산, Proton 내부 AI 전환 갈등 논란"
   }
  ],
  "sources": {
   "gn": {
-   "fetched": 46,
-   "kept": 8
-  },
-  "hn": {
-   "fetched": 25,
+   "fetched": 47,
    "kept": 3
   },
+  "hn": {
+   "fetched": 29,
+   "kept": 8
+  },
   "gpters": {
-   "fetched": 9,
-   "kept": 4
+   "fetched": 5,
+   "kept": 3
   },
   "websearch": {
    "fetched": 0,
@@ -46,10 +46,10 @@
   }
  },
  "run": {
-  "candidates": 80,
-  "ai_filtered": 31,
-  "new": 24,
-  "added": 15,
-  "total": 29
+  "candidates": 81,
+  "ai_filtered": 34,
+  "new": 21,
+  "added": 14,
+  "total": 43
  }
 }

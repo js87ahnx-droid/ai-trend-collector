@@ -303,6 +303,162 @@
    "gist": "Codex로 3일간 사내 ERP 저장 규칙을 정리해 111개 파일 PR을 운영 반영한 과정과 판단 기준",
    "collected_at": "2026-10-30T13:43:17Z",
    "origin": "gpters.org"
+  },
+  {
+   "id": "gn-36298",
+   "title": "Show GN: WORLD MODEL - 지금 쓸 수 있는 세계 AI 모델 1,100여 개를 한눈에 보는 도감",
+   "url": "https://news.hada.io/topic?id=36298",
+   "source": "gn",
+   "theme": "model",
+   "gist": "138개사 AI 모델 1,100여 개를 분야·국가·로컬 실행 여부로 걸러 볼 수 있는 모델 도감 사이트",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gn-36286",
+   "title": "Show GN: Vicem - 로컬 AI 코딩 에이전트 간 작업 컨텍스트를 전달하는 CLI/GUI 도구",
+   "url": "https://news.hada.io/topic?id=36286",
+   "source": "gn",
+   "theme": "code",
+   "gist": "Claude Code·Codex·Cursor 등 코딩 에이전트를 바꿔 쓸 때 작업 맥락을 자동으로 넘겨주는 오픈소스 도구",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gnp-36293",
+   "title": "미국 하원의원들, AI 거품 붕괴 시 빅테크 구제금융에 반대하는 민주당 결의안 발의 주도",
+   "url": "https://news.hada.io/topic?id=36293",
+   "source": "gnp",
+   "theme": "industry",
+   "gist": "미 민주당 의원들이 AI 거품 붕괴 시 빅테크 구제 대신 노동자·은퇴자 보호를 촉구하는 결의안을 발의",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50305693",
+   "title": "AI isn't replacing SREs, it's deskilling them",
+   "url": "https://newsletter.signoz.io/p/ai-isnt-replacing-sres-its-deskilling",
+   "source": "hn",
+   "theme": "industry",
+   "gist": "AI가 SRE를 대체하기보다 장애 대응 역량을 약화시키는 탈숙련화를 일으킨다는 문제 제기",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "score": 302,
+   "comments": 223,
+   "origin": "newsletter.signoz.io"
+  },
+  {
+   "id": "hn-50306008",
+   "title": "US tech stocks see sharp falls over AI cost fears",
+   "url": "https://www.bbc.co.uk/news/articles/cvwy72e0n72yo",
+   "source": "hn",
+   "theme": "industry",
+   "gist": "AI 투자 비용 부담 우려로 미국 기술주가 큰 폭으로 하락했다는 소식",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "score": 187,
+   "comments": 171,
+   "origin": "bbc.co.uk"
+  },
+  {
+   "id": "gpters-patyhIrwABaeYjZ",
+   "title": "제미나이 4 카본(Gemini 4 Carbon) 공개: 아직 아무나 못 써요",
+   "url": "https://www.gpters.org/news/post/gemini-4-carbon-revealed-patyhIrwABaeYjZ",
+   "source": "gpters",
+   "theme": "model",
+   "gist": "구글 최상위 모델 Gemini 4 Carbon 공개, 일부 사이버 방어 담당자만 접근 가능하며 입력 100만 토큰당 2달러",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "origin": "gpters.org"
+  },
+  {
+   "id": "hn-50307183",
+   "title": "Proton's CEO Cancels AI 'Re-Interviews'",
+   "url": "https://www.404media.co/protons-ceo-cancels-ai-re-interviews/",
+   "source": "hn",
+   "theme": "industry",
+   "gist": "Proton CEO가 논란이 된 직원 대상 AI 역량 재면접 방침을 철회",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "score": 155,
+   "comments": 96,
+   "origin": "404media.co"
+  },
+  {
+   "id": "gpters-VQaDMRwtmmMvNqr",
+   "title": "LLM vs DLM, 정말 빠를까? Mercury 3로 실험해봤다",
+   "url": "https://www.gpters.org/nocode/post/llm-vs-dlm-really-VQaDMRwtmmMvNqr",
+   "source": "gpters",
+   "theme": "research",
+   "gist": "확산형 언어모델 Mercury 3로 번역 속도를 실측해보니 Claude Haiku보다 약 2.5배 빨랐다는 비교 실험",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "origin": "gpters.org"
+  },
+  {
+   "id": "hn-50306442",
+   "title": "A Working Nintendo in ~1GB of Qwen Weights",
+   "url": "https://github.com/dbreunig/nesformer",
+   "source": "hn",
+   "theme": "research",
+   "gist": "약 1GB 규모 Qwen 가중치로 닌텐도 게임 동작을 구현한 실험",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "score": 91,
+   "comments": 80,
+   "origin": "github.com"
+  },
+  {
+   "id": "gpters-Sm32djvQGO26xHR",
+   "title": "[AX] Aside vs Ego-lite, 네이버·구글 지도 리뷰 분석부터 블로그 발행까지 자동화되네요",
+   "url": "https://www.gpters.org/nocode/post/agentbrowser-aside-vs-ego-Sm32djvQGO26xHR",
+   "source": "gpters",
+   "theme": "agent",
+   "gist": "무료 브라우저 에이전트로 지도 리뷰 분석 보고서와 네이버 블로그 발행까지 무인 자동화한 비교 후기",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "origin": "gpters.org"
+  },
+  {
+   "id": "hn-50307219",
+   "title": "Anthropic may not secure investment-grade rating after IPO, Blackstone says",
+   "url": "https://www.ft.com/content/59383c7f-8d82-493f-bf01-d2e862a1018f",
+   "source": "hn",
+   "theme": "industry",
+   "gist": "블랙스톤, Anthropic이 IPO 후에도 투자등급 신용등급을 받기 어려울 수 있다고 평가",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "score": 58,
+   "comments": 16,
+   "origin": "ft.com"
+  },
+  {
+   "id": "hn-50296730",
+   "title": "Building an AI-native engineering org",
+   "url": "https://twitter.com/sgondala2/status/2115832070274723875",
+   "source": "hn",
+   "theme": "industry",
+   "gist": "AI 네이티브 엔지니어링 조직을 구축하는 방식과 조직 운영 원칙에 대한 글",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "score": 16,
+   "comments": 10,
+   "origin": "twitter.com"
+  },
+  {
+   "id": "hn-50306815",
+   "title": "Show HN: Spinf-serve – inference server for bulk scoring and decisions",
+   "url": "https://github.com/spinfinc/spinf-serve",
+   "source": "hn",
+   "theme": "code",
+   "gist": "대량 스코어링·판정 작업에 특화된 LLM 추론 서버 Spinf-serve 공개",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "score": 7,
+   "comments": 0,
+   "origin": "github.com"
+  },
+  {
+   "id": "hn-50305218",
+   "title": "Show HN: Sketch Stadium – watch your agent play Pictionary",
+   "url": "https://sketch.wakeshift.ai/",
+   "source": "hn",
+   "theme": "agent",
+   "gist": "AI 에이전트끼리 그림 맞히기 게임을 하는 플랫폼, 자기 에이전트를 연결해 참여 가능",
+   "collected_at": "2026-10-30T18:50:13Z",
+   "score": 4,
+   "comments": 0,
+   "origin": "sketch.wakeshift.ai"
   }
  ]
 }
