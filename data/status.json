@@ -1,1 +1,31 @@
-{"last_run": null, "themes": [], "sources": {}}
+{
+ "last_run": "2026-10-30T12:45:20Z",
+ "themes": [],
+ "sources": {
+  "gn": {
+   "fetched": 46,
+   "kept": 0
+  },
+  "hn": {
+   "fetched": 29,
+   "kept": 0
+  },
+  "gpters": {
+   "fetched": 11,
+   "kept": 0
+  },
+  "websearch": {
+   "fetched": 0,
+   "note": "SEARCH_API_KEY 없음 — 건너뜀",
+   "kept": 0
+  }
+ },
+ "run": {
+  "candidates": 86,
+  "ai_filtered": 36,
+  "new": 36,
+  "added": 0,
+  "total": 0,
+  "note": "ANTHROPIC_API_KEY 없음 — 분류·저장 건너뜀"
+ }
+}
