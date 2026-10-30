@@ -127,16 +127,6 @@
    "origin": "news.hada.io"
   },
   {
-   "id": "gnp-36265",
-   "title": "Minecraft와 Mindustry에서 AI 에이전트 군집을 실행해 봄",
-   "url": "https://news.hada.io/topic?id=36265",
-   "source": "gnp",
-   "theme": "agent",
-   "gist": "마인크래프트·Mindustry 다중 에이전트 실험에서 리더·역할·배급 규칙이 자발 형성되고 모델별 행동 차이 관찰",
-   "collected_at": "2026-10-30T13:22:15Z",
-   "origin": "news.hada.io"
-  },
-  {
    "id": "hn-50296486",
    "title": "We ran AI agent swarms in Minecraft and Mindustry",
    "url": "https://labs.ycombinator.com/projects/games/index.html",

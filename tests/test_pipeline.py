@@ -59,6 +59,27 @@ def test_classify_drops_skip_unknown_and_bad_theme():
     assert "hn-3" in req["messages"][0]["content"]
 
 
+def test_classify_sends_stored_titles_for_cross_run_dedupe():
+    client = FakeClient({"results": []})
+    classify.classify([r("hn-1", "a")], client, ["We ran AI agent swarms in Minecraft"])
+    prompt = client.calls[0]["messages"][0]["content"]
+    assert "- We ran AI agent swarms in Minecraft" in prompt and "같은 소식" in prompt
+    classify.classify([r("hn-1", "a")], FakeClient({"results": []}))   # 저장 글 없어도 동작
+
+
+def test_run_passes_recent_titles(tmp_path):
+    main.run(NOW, tmp_path, FakeClient(label_all, {"themes": []}), sources=[("hn", Good)])
+
+    class More:
+        @staticmethod
+        def fetch(ctx):
+            return [r("hn-20", "Another LLM release")]
+
+    client = FakeClient(label_all, {"themes": []})
+    main.run(NOW + timedelta(hours=1), tmp_path, client, sources=[("hn", More)])
+    assert "- Claude agent memory tips" in client.calls[0]["messages"][0]["content"]
+
+
 def test_refusal_raises():
     with pytest.raises(classify.LLMError):
         classify.classify([r("hn-1", "a")], FakeClient({"results": []}, stop_reason="refusal"))

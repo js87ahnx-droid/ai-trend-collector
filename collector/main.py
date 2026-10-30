@@ -59,7 +59,8 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
         log.warning(llm_note)
     elif fresh:
         try:
-            labeled = classify.classify(fresh, client)
+            stored = [it["title"] for it in store.recent(items, now, 24)]
+            labeled = classify.classify(fresh, client, stored)
             items, added = store.add_items(items, labeled, now)
             log.info("분류 %d건 중 저장 %d건", len(labeled), len(added))
         except Exception as e:

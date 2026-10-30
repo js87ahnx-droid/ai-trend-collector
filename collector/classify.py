@@ -9,6 +9,7 @@ from .store import THEMES
 
 MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-opus-5-5")
 MAX_TO_CLASSIFY = 40
+MAX_STORED_TITLES = 400   # 24시간 × 회차당 15건 ≒ 360
 
 # 범용 소스(gn·gnp·hn)는 AI 관련 낌새가 있는 글만 LLM에 보낸다. 나머지 소스는 이미 AI 주제로 좁혀져 있음.
 GENERAL_SOURCES = {"gn", "gnp", "hn"}
@@ -36,9 +37,10 @@ CLASSIFY_PROMPT = """너는 AI 업계 뉴스 큐레이터다. 아래 게시글 �
    model=모델·출시·벤치마크, research=연구·실험, industry=업계·정책·논쟁)
 - gist는 한국어 한 문장, 60자 안팎. 원문 문장을 베끼지 말고 직접 요약.
   읽는 사람이 업무에 바로 쓸 수 있는 포인트가 있으면 그걸 우선.
+- 같은 소식(같은 발표·글·실험)을 다룬 글이 목록에 여러 개면 score가 가장 높은 하나만 남기고
+  (score가 없으면 먼저 나온 글) 나머지는 skip=true. 소스·언어가 달라도 같은 소식이면 중복이다.
+- "이미 저장된 글"과 같은 소식인 글도 skip=true.
 - 목록의 모든 id에 대해 정확히 한 번씩 답하라.
-
-게시글(JSON Lines):
 """
 
 THEME_PROMPT = """최근 24시간 동안 수집된 아래 글들의 테마별 흐름을 한국어 한 줄(40자 안팎)씩 요약하라.
@@ -131,16 +133,19 @@ def _ask(client, prompt: str, schema: dict, max_tokens: int) -> dict:
     return json.loads(text)
 
 
-def classify(cands: list[dict], client) -> list[dict]:
-    """cands에 theme·gist를 붙여 반환. skip·누락·잘못된 응답은 버린다."""
+def classify(cands: list[dict], client, stored_titles: list[str] = ()) -> list[dict]:
+    """cands에 theme·gist를 붙여 반환. skip·누락·잘못된 응답은 버린다.
+    stored_titles: 최근 저장된 글 제목 — 같은 소식의 재수집을 LLM이 걸러내도록 함께 보낸다."""
     if not cands:
         return []
+    stored = "\n".join(f"- {t}" for t in list(stored_titles)[-MAX_STORED_TITLES:]) or "(없음)"
     lines = [
         json.dumps({k: c.get(k) for k in ("id", "title", "source", "score", "comments")} | {"excerpt": (c.get("excerpt") or "")[:300]},
                    ensure_ascii=False)
         for c in cands
     ]
-    data = _ask(client, CLASSIFY_PROMPT + "\n".join(lines), CLASSIFY_SCHEMA, 16000)
+    prompt = f"{CLASSIFY_PROMPT}\n이미 저장된 글(최근 24시간):\n{stored}\n\n게시글(JSON Lines):\n" + "\n".join(lines)
+    data = _ask(client, prompt, CLASSIFY_SCHEMA, 16000)
     labels: dict[str, dict] = {}
     for r in data.get("results", []):
         labels.setdefault(r.get("id"), r)   # 같은 id가 두 번 오면 첫 답만
