@@ -1,18 +1,43 @@
 {
- "last_run": "2026-10-30T12:45:20Z",
- "themes": [],
+ "last_run": "2026-10-30T13:22:15Z",
+ "themes": [
+  {
+   "key": "tip",
+   "summary": "텍스트·음성을 넘어 AI 캐릭터와 영상 통화하는 서비스 체험 소개"
+  },
+  {
+   "key": "agent",
+   "summary": "한국 공공데이터 MCP 서버와 게임 속 에이전트 군집의 사회 구조 형성 실험 주목"
+  },
+  {
+   "key": "code",
+   "summary": "Claude Code 기반 캔버스·멀티에이전트 관리·기억 도구가 늘지만 확장 백도어 보안 경고도"
+  },
+  {
+   "key": "model",
+   "summary": "Mistral이 대형 모델 Large 4 가중치를 공개하며 오픈 웨이트 진영 강화"
+  },
+  {
+   "key": "research",
+   "summary": "초소형 월드 모델의 온디바이스 게임 구동과 데이터 에이전트 실전 한계 벤치마크"
+  },
+  {
+   "key": "industry",
+   "summary": "OpenAI 사용량 한도 확대, Proton 내부 AI 전환 갈등, LLM 말투 논쟁 부상"
+  }
+ ],
  "sources": {
   "gn": {
    "fetched": 46,
-   "kept": 0
+   "kept": 8
   },
   "hn": {
    "fetched": 29,
-   "kept": 0
+   "kept": 4
   },
   "gpters": {
    "fetched": 11,
-   "kept": 0
+   "kept": 3
   },
   "websearch": {
    "fetched": 0,
@@ -22,10 +47,9 @@
  },
  "run": {
   "candidates": 86,
-  "ai_filtered": 36,
-  "new": 36,
-  "added": 0,
-  "total": 0,
-  "note": "ANTHROPIC_API_KEY 없음 — 분류·저장 건너뜀"
+  "ai_filtered": 37,
+  "new": 37,
+  "added": 15,
+  "total": 15
  }
 }

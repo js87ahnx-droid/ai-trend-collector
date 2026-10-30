@@ -1,3 +1,162 @@
 {
- "items": []
+ "items": [
+  {
+   "id": "gn-36285",
+   "title": "Show GN: Shellside - Claude Code가 상주하는 생성형 캔버스, 요청하면 나만의 도구·앱·워크플로우를 즉석에서 생성",
+   "url": "https://news.hada.io/topic?id=36285",
+   "source": "gn",
+   "theme": "code",
+   "gist": "보드마다 Claude Code가 붙은 캔버스에서 대화만으로 필요한 도구·앱을 즉석 생성하는 웹서비스",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gnp-36283",
+   "title": "Herdr, 터미널과 코딩 에이전트용 네이티브 앱 출시",
+   "url": "https://news.hada.io/topic?id=36283",
+   "source": "gnp",
+   "theme": "code",
+   "gist": "여러 코딩 에이전트와 터미널을 작업공간별로 묶고 개입 필요한 에이전트를 한눈에 보는 데스크톱 앱",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50289418",
+   "title": "We're releasing the weights of Mistral Large 4",
+   "url": "https://mistral.ai/news/mistral-large-4-oss/",
+   "source": "hn",
+   "theme": "model",
+   "gist": "Mistral이 대형 모델 Large 4의 가중치를 공개해 오픈 웨이트로 직접 활용 가능해짐",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "score": 1566,
+   "comments": 410,
+   "origin": "mistral.ai"
+  },
+  {
+   "id": "gpters-obx6q7V3985Wv6E",
+   "title": "AI 캐릭터와 영상 통화를 한다면? 텍스트 채팅을 넘어서는 Pogee AI 영상 통화",
+   "url": "https://www.gpters.org/news/post/what-you-make-video-obx6q7V3985Wv6E",
+   "source": "gpters",
+   "theme": "tip",
+   "gist": "텍스트·음성을 넘어 AI 캐릭터와 영상 통화하는 Pogee AI 서비스 경험을 소개",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "gpters.org"
+  },
+  {
+   "id": "gn-36277",
+   "title": "Show GN: korea-data-mcp – AI 에이전트가 한국 공공 API를 틀리게 읽지 않도록 해주는 MCP 서버",
+   "url": "https://news.hada.io/topic?id=36277",
+   "source": "gn",
+   "theme": "agent",
+   "gist": "DART·공공데이터포털·법령 API를 MCP로 묶어 에이전트가 한국 공공데이터를 정확히 조회하게 함",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gnp-36274",
+   "title": "Raspberry Pi Pico 2 W에서 게임을 실행하는 초소형 월드 모델",
+   "url": "https://news.hada.io/topic?id=36274",
+   "source": "gnp",
+   "theme": "research",
+   "gist": "루프형 트랜스포머 기반 초소형 월드 모델로 라즈베리파이 피코에서 게임 생성과 플레이를 동시 수행",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50290177",
+   "title": "LLM Voice",
+   "url": "https://martinfowler.com/bliki/LLM-Voice.html",
+   "source": "hn",
+   "theme": "industry",
+   "gist": "LLM 특유의 말투·목소리를 주제로 HN에서 활발한 논쟁이 벌어진 글",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "score": 517,
+   "comments": 276,
+   "origin": "martinfowler.com"
+  },
+  {
+   "id": "gpters-RyRmEROlGFnu1AZ",
+   "title": "클로드 코드랑 코덱스가 지난 대화를 기억하게 만들어 봤어요",
+   "url": "https://www.gpters.org/dev/post/tried-making-claude-code-RyRmEROlGFnu1AZ",
+   "source": "gpters",
+   "theme": "code",
+   "gist": "컨텍스트 압축 후에도 결정사항을 유지하도록 Claude Code·Codex에 대화 기억을 붙이는 도구 턴북 소개",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "gpters.org"
+  },
+  {
+   "id": "gn-36273",
+   "title": "OpenAI, Pro와 Business Premium 사용량 한도 2배 확대",
+   "url": "https://news.hada.io/topic?id=36273",
+   "source": "gn",
+   "theme": "industry",
+   "gist": "OpenAI가 Pro·Business Premium 사용량 한도를 즉시 2배로 늘리고 Pro 200 축소 계획 철회",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gnp-36268",
+   "title": "선언문, 두려움, ‘패배자 사고방식’: Proton 내부의 AI 전환 갈등",
+   "url": "https://news.hada.io/topic?id=36268",
+   "source": "gnp",
+   "theme": "industry",
+   "gist": "Proton 경영진의 강압적 AI 중심 개발 전환으로 보안 우려 제기 직원들이 위협을 느낀다는 내부 갈등",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50302334",
+   "title": "Backdoors in official Claude Code extensions",
+   "url": "https://cyberplace.social/@GossiTheDog/117528831681803563",
+   "source": "hn",
+   "theme": "code",
+   "gist": "공식 Claude Code 확장에서 백도어가 발견돼 확장 설치·사용 시 보안 점검이 필요함",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "score": 409,
+   "comments": 119,
+   "origin": "cyberplace.social"
+  },
+  {
+   "id": "gn-36272",
+   "title": "데이터 에이전트는 실제 분석을 할 수 있을까?",
+   "url": "https://news.hada.io/topic?id=36272",
+   "source": "gn",
+   "theme": "research",
+   "gist": "다중 DB·도메인 지식·비정형 데이터를 포함한 실전형 벤치마크에서 최고 데이터 에이전트도 통과율 약 61%",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gnp-36265",
+   "title": "Minecraft와 Mindustry에서 AI 에이전트 군집을 실행해 봄",
+   "url": "https://news.hada.io/topic?id=36265",
+   "source": "gnp",
+   "theme": "agent",
+   "gist": "마인크래프트·Mindustry 다중 에이전트 실험에서 리더·역할·배급 규칙이 자발 형성되고 모델별 행동 차이 관찰",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50296486",
+   "title": "We ran AI agent swarms in Minecraft and Mindustry",
+   "url": "https://labs.ycombinator.com/projects/games/index.html",
+   "source": "hn",
+   "theme": "agent",
+   "gist": "게임 환경에 AI 에이전트 군집을 풀어 협업·사회 구조 형성을 관찰한 실험 원문",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "score": 325,
+   "comments": 130,
+   "origin": "labs.ycombinator.com"
+  },
+  {
+   "id": "gpters-NhoVnAaj1tLcAZO",
+   "title": "클로드 코드로 만든 감사일기 앱, 안드로이드 비공개 테스트 열기까지 (테스터 12명 구해요)",
+   "url": "https://www.gpters.org/dev/post/gratitude-diary-app-made-NhoVnAaj1tLcAZO",
+   "source": "gpters",
+   "theme": "code",
+   "gist": "Claude Code와 Expo로 감사일기 앱을 만들고 구글 플레이 비공개 테스트 요건을 통과한 과정 공유",
+   "collected_at": "2026-10-30T13:22:15Z",
+   "origin": "gpters.org"
+  }
+ ]
 }
