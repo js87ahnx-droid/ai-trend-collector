@@ -11,7 +11,7 @@ from datetime import datetime, timedelta, timezone
 from urllib.parse import urlencode, urlparse
 
 from .. import http
-from .base import Context, raw
+from .base import MAX_PER_SOURCE, Context, raw
 
 API = "https://api.search.brave.com/res/v1/web/search"
 SUBREDDITS = ("ClaudeAI", "ChatGPT", "LocalLLaMA", "singularity", "OpenAI", "ChatGPTPro")
@@ -112,6 +112,8 @@ def fetch(ctx: Context, sleep=time.sleep) -> list[dict]:
             r = to_raw(res, ctx.now)
             if r and r["id"] not in seen and r["id"] not in ctx.known_ids:
                 if expect != "web" and r["source"] != expect:
+                    continue
+                if sum(1 for o in out if o["source"] == r["source"]) >= MAX_PER_SOURCE:
                     continue
                 seen.add(r["id"])
                 out.append(r)

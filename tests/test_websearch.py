@@ -35,6 +35,15 @@ def test_query_count_and_rotation():
     assert all(q.startswith("site:threads.com") for s, q in q0 if s == "threads")
 
 
+def test_per_source_cap_30(monkeypatch):
+    n = iter(range(10_000))
+    monkeypatch.setattr(ws, "search", lambda q, key: [
+        {"url": f"https://www.reddit.com/r/ChatGPT/comments/a{next(n)}/x/", "title": "t", "age": "1 hour ago"}
+        for _ in range(20)])
+    out = ws.fetch(Context(now=NOW, search_api_key="k"), sleep=lambda s: None)
+    assert sum(r["source"] == "reddit" for r in out) == 30
+
+
 def test_no_key_skips_without_calls(monkeypatch):
     monkeypatch.setattr(ws, "search", lambda *a: 1 / 0)
     assert ws.fetch(Context(now=NOW)) == []
