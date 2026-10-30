@@ -32,6 +32,12 @@ def test_url_already_stored_is_skipped():
     assert store.dedupe_candidates([item(2, url="https://blog.dev/post")], existing) == []
 
 
+def test_rank_interleaves_sources_by_score():
+    cands = [item(1, score=900), item(2, score=500), item(3, score=700),
+             item(4, id="gn-4", source="gn", score=None), item(5, id="gn-5", source="gn", score=None)]
+    assert [c["id"] for c in store.rank_for_run(cands)] == ["hn-1", "gn-4", "hn-3", "gn-5", "hn-2"]
+
+
 def test_run_cap_15():
     _, added = store.add_items([], [item(i) for i in range(16)], NOW)
     assert len(added) == 15

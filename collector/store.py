@@ -79,12 +79,20 @@ def dedupe_candidates(candidates: list[dict], existing: list[dict]) -> list[dict
 
 
 def rank_for_run(candidates: list[dict]) -> list[dict]:
-    """회차 상한을 넘을 때 남길 순서: 점수·댓글 많은 순, 같으면 게시 최신순."""
-    return sorted(
-        candidates,
-        key=lambda c: ((c.get("score") or 0) + (c.get("comments") or 0), c.get("published_at") or ""),
-        reverse=True,
-    )
+    """회차 상한을 넘을 때 남길 순서. 점수가 없는 국내 소스가 밀리지 않도록
+    소스별로 (점수+댓글, 게시 최신) 순으로 줄 세운 뒤 한 건씩 번갈아 뽑는다."""
+    by_source: dict[str, list[dict]] = {}
+    for c in candidates:
+        by_source.setdefault(c["source"], []).append(c)
+    queues = [
+        sorted(q, key=lambda c: ((c.get("score") or 0) + (c.get("comments") or 0), c.get("published_at") or ""),
+               reverse=True)
+        for q in by_source.values()
+    ]
+    out = []
+    for i in range(max((len(q) for q in queues), default=0)):
+        out += [q[i] for q in queues if i < len(q)]
+    return out
 
 
 def add_items(existing: list[dict], new: list[dict], now: datetime) -> tuple[list[dict], list[dict]]:
