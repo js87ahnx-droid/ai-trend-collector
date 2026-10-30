@@ -147,6 +147,162 @@
    "gist": "Claude Code와 Expo로 감사일기 앱을 만들고 구글 플레이 비공개 테스트 요건을 통과한 과정 공유",
    "collected_at": "2026-10-30T13:22:15Z",
    "origin": "gpters.org"
+  },
+  {
+   "id": "gn-36269",
+   "title": "998달러로 3.8B LLM을 학습해 CORE 0.384 달성하기",
+   "url": "https://news.hada.io/topic?id=36269",
+   "source": "gn",
+   "theme": "research",
+   "gist": "B200 8대로 43시간, 998달러에 3.8B 모델을 처음부터 학습해 CORE 0.384를 달성한 개인 프로젝트, Muon·ClimbMix 활용",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gn-36260",
+   "title": "Show GN: 컷팩(Cutfac) - Claude Code/Codex로 숏폼 만들 때 쓰는 오픈소스 비디오 에디터",
+   "url": "https://news.hada.io/topic?id=36260",
+   "source": "gn",
+   "theme": "code",
+   "gist": "Claude Code·Codex로 숏폼을 만들 때 수정 부분 지정과 프리뷰를 돕는 오픈소스 비디오 에디터 컷팩 공개",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gnp-36254",
+   "title": "좀비 통계: AI가 인용하는 숫자는 어디에서 오는가",
+   "url": "https://news.hada.io/topic?id=36254",
+   "source": "gnp",
+   "theme": "research",
+   "gist": "AI 서비스의 통계 인용 1,285건 중 원연구와 일치한 건 40%뿐, AI가 인용한 수치는 출처를 직접 확인해야",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50297697",
+   "title": "Show HN: I Turned DOOM into a Transformer",
+   "url": "https://github.com/mottopanikeiku/doomformer",
+   "source": "hn",
+   "theme": "research",
+   "gist": "튜링 완전한 DOOM 게임 메커니즘으로 트랜스포머 연산을 구현해 본 기발한 실험 프로젝트",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "score": 111,
+   "comments": 34,
+   "origin": "github.com"
+  },
+  {
+   "id": "gn-36258",
+   "title": "10억 명 이상의 ChatGPT 사용자를 위한 온라인 스토리지의 빠른 확장(2부)",
+   "url": "https://news.hada.io/topic?id=36258",
+   "source": "gn",
+   "theme": "industry",
+   "gist": "OpenAI가 10억 ChatGPT 사용자용 500PB 스토리지를 Cosmos DB 기반으로 안정성·성능·운영 순으로 개선한 경험",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gnp-36249",
+   "title": "Tomáš Mikolov, 체코 대통령에게 공로 메달 수훈",
+   "url": "https://news.hada.io/topic?id=36249",
+   "source": "gnp",
+   "theme": "industry",
+   "gist": "Word2Vec 공동 개발자 토마시 미콜로프가 과학 기여로 체코 대통령 공로 메달을 받음",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50273340",
+   "title": "Artificial Analysis v5 and the benchmarker's dilemma",
+   "url": "https://www.interconnects.ai/p/artificial-analysis-v5-and-the-benchmarkers",
+   "source": "hn",
+   "theme": "model",
+   "gist": "Artificial Analysis 지수 v5 개편과 함께 벤치마크 설계자가 겪는 딜레마를 다룬 글",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "score": 40,
+   "comments": 27,
+   "origin": "interconnects.ai"
+  },
+  {
+   "id": "gpters-y9jmpVGtoTEzU6Z",
+   "title": "150+ 최신 AI·SaaS 도구의 공식 가격·무료 한도·API 지원을 5개 국어로 한눈에 비교하는 포털을 만들었습니다 (SaaS Radar AI)",
+   "url": "https://www.gpters.org/dev/post/we-created-portal-compares-y9jmpVGtoTEzU6Z",
+   "source": "gpters",
+   "theme": "tip",
+   "gist": "157개 AI·SaaS 도구의 공식 가격·무료 한도·API 지원을 5개 국어로 비교하는 정적 포털 제작기",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "gpters.org"
+  },
+  {
+   "id": "gn-36227",
+   "title": "Show GN: oh-my-ouroboros - 피드백과 점검으로 스스로 다듬어지는 Claude Code 하네스",
+   "url": "https://news.hada.io/topic?id=36227",
+   "source": "gn",
+   "theme": "code",
+   "gist": "늘어나는 규칙·스킬을 피드백과 점검으로 스스로 정리하는 Claude Code 하네스 oh-my-ouroboros 공개",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gnp-36247",
+   "title": "우리는 “그냥 어울려 지내지” 않을 것이다",
+   "url": "https://news.hada.io/topic?id=36247",
+   "source": "gnp",
+   "theme": "industry",
+   "gist": "초지능이 일과 교육을 무의미하게 만들면 직장·학습 공동체 기반 인간관계가 약화될 수 있다는 에세이",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50302407",
+   "title": "Fiber lasts decades, GPUs last three years: the AI boom isn't the dot-com boom [video]",
+   "url": "https://www.youtube.com/watch?v=MENoB3Rex28",
+   "source": "hn",
+   "theme": "industry",
+   "gist": "수십 년 쓰는 광섬유와 달리 GPU는 3년이면 소모돼 AI 붐은 닷컴 버블과 다르다는 분석 영상",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "score": 27,
+   "comments": 22,
+   "origin": "youtube.com"
+  },
+  {
+   "id": "gpters-QLb6gQdorrq5jFI",
+   "title": "영업 리드 Workflow, 루프를 기다리며 디테일을 다듬어 보자",
+   "url": "https://www.gpters.org/dev/post/yeongeob-rideu-workflow-rupeureul-gidarimyeo-diteileul-dadeumeo-boja-QLb6gQdorrq5jFI",
+   "source": "gpters",
+   "theme": "agent",
+   "gist": "Claude Code로 영업 리드 봇에 퍼널 비율, 방문 우선순위 조정, 에러 방지를 더해 다듬은 실전 기록",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "gpters.org"
+  },
+  {
+   "id": "gnp-36244",
+   "title": "마틴 파울러: LLM 문체가 만드는 글의 불쾌한 골짜기",
+   "url": "https://news.hada.io/topic?id=36244",
+   "source": "gnp",
+   "theme": "tip",
+   "gist": "마틴 파울러, LLM 특유 문체는 독자 거부감을 유발하니 초안 작성을 LLM에 맡기지 말라고 권고",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "gpters-AFgmZHJWmGRWzwf",
+   "title": "클로드 코드(Claude Code)로 영업 신호를 넓혔더니 대상 회사가 4배",
+   "url": "https://www.gpters.org/nocode/post/when-we-expanded-our-AFgmZHJWmGRWzwf",
+   "source": "gpters",
+   "theme": "agent",
+   "gist": "Claude Code로 영업 신호를 채용공고에서 뉴스 3종으로 넓혀 주간 대상 회사를 7곳에서 30곳으로 늘린 사례",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "gpters.org"
+  },
+  {
+   "id": "gpters-NGhPM3bZJ3v13a3",
+   "title": "Codex로 사내 ERP 점검하는 방법: 화면을 늘리지 않고 저장 규칙부터 정리한 3일",
+   "url": "https://www.gpters.org/dev/post/how-check-inhouse-erp-NGhPM3bZJ3v13a3",
+   "source": "gpters",
+   "theme": "code",
+   "gist": "Codex로 3일간 사내 ERP 저장 규칙을 정리해 111개 파일 PR을 운영 반영한 과정과 판단 기준",
+   "collected_at": "2026-10-30T13:43:17Z",
+   "origin": "gpters.org"
   }
  ]
 }

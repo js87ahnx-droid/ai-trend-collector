@@ -1,29 +1,29 @@
 {
- "last_run": "2026-10-30T13:22:15Z",
+ "last_run": "2026-10-30T13:43:17Z",
  "themes": [
   {
    "key": "tip",
-   "summary": "텍스트·음성을 넘어 AI 캐릭터와 영상 통화하는 서비스 체험 소개"
+   "summary": "AI 영상통화·도구 가격 비교 등 활용 팁과 LLM 문체를 경계하라는 글쓰기 조언"
   },
   {
    "key": "agent",
-   "summary": "한국 공공데이터 MCP 서버와 게임 속 에이전트 군집의 사회 구조 형성 실험 주목"
+   "summary": "공공데이터 MCP 연결과 Claude Code 영업 자동화 실전기, 게임 속 에이전트 군집 실험"
   },
   {
    "key": "code",
-   "summary": "Claude Code 기반 캔버스·멀티에이전트 관리·기억 도구가 늘지만 확장 백도어 보안 경고도"
+   "summary": "Claude Code·Codex 위에 캔버스·에디터·하네스 등 보조 도구가 쏟아지고 확장 백도어 경고도 나옴"
   },
   {
    "key": "model",
-   "summary": "Mistral이 대형 모델 Large 4 가중치를 공개하며 오픈 웨이트 진영 강화"
+   "summary": "Mistral 대형 모델 오픈 웨이트 공개와 벤치마크 지수 개편의 고민이 함께 화제"
   },
   {
    "key": "research",
-   "summary": "초소형 월드 모델의 온디바이스 게임 구동과 데이터 에이전트 실전 한계 벤치마크"
+   "summary": "초소형 월드 모델·저비용 LLM 학습 실험과 데이터 에이전트·AI 인용 통계의 한계 검증"
   },
   {
    "key": "industry",
-   "summary": "OpenAI 사용량 한도 확대, Proton 내부 AI 전환 갈등, LLM 말투 논쟁 부상"
+   "summary": "OpenAI 한도 확대·인프라 확장 속 기업 내 AI 전환 갈등과 GPU 버블·초지능 사회 우려"
   }
  ],
  "sources": {
@@ -32,12 +32,12 @@
    "kept": 8
   },
   "hn": {
-   "fetched": 29,
-   "kept": 4
+   "fetched": 25,
+   "kept": 3
   },
   "gpters": {
-   "fetched": 11,
-   "kept": 3
+   "fetched": 9,
+   "kept": 4
   },
   "websearch": {
    "fetched": 0,
@@ -46,10 +46,10 @@
   }
  },
  "run": {
-  "candidates": 86,
-  "ai_filtered": 37,
-  "new": 37,
+  "candidates": 80,
+  "ai_filtered": 31,
+  "new": 24,
   "added": 15,
-  "total": 15
+  "total": 29
  }
 }
