@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>AI 동향 수집함</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6f7f9;--surface:#fff;--line:#e3e6eb;--text:#1b1f24;--muted:#5f6a76;--chip:#eef1f4;
+  --tip:#2563eb;--agent:#0d9488;--code:#ea580c;--model:#7c3aed;--research:#557085;--industry:#c026d3;
+  --ok:#16a34a;--warn:#ea8a00;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0f1216;--surface:#171b21;--line:#2a3039;--text:#e7eaee;--muted:#9aa4b0;--chip:#222831;
+  --tip:#60a5fa;--agent:#2dd4bf;--code:#fb923c;--model:#a78bfa;--research:#8fa9bd;--industry:#e879f9;
+  --ok:#22c55e;--warn:#f59e0b;
+}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 "IBM Plex Sans KR",system-ui,-apple-system,sans-serif}
+.mono{font-family:"IBM Plex Mono",ui-monospace,monospace}
+a{color:inherit;text-decoration:none}
+a:hover{text-decoration:underline}
+button{font:inherit;color:inherit}
+.wrap{max-width:1080px;margin:0 auto;padding:16px 16px 48px}
+header.top{display:flex;justify-content:space-between;align-items:flex-end;gap:8px 12px;flex-wrap:wrap;margin-bottom:10px}
+h1{font-size:22px;margin:0;letter-spacing:-.01em}
+.status{font-size:13px;color:var(--muted);display:flex;gap:6px 12px;align-items:center;flex-wrap:wrap}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:5px;vertical-align:1px}
+.dot.late{background:var(--warn)}
+.late-label{color:var(--warn);font-weight:600}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 14px}
+.seg{display:inline-flex;background:var(--chip);border-radius:8px;padding:2px}
+.seg button{border:0;background:none;color:var(--muted);padding:5px 11px;border-radius:6px;font-size:13px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--text);font-weight:600;box-shadow:0 1px 2px #0002}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(165px,1fr));gap:8px;margin-bottom:6px}
+.card{all:unset;box-sizing:border-box;display:block;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;border-top:3px solid var(--c);min-width:0}
+.card:focus-visible{outline:2px solid var(--c);outline-offset:2px}
+.card[aria-pressed="true"]{box-shadow:0 0 0 2px var(--c) inset}
+.card.empty{opacity:.5}
+.card .name{font-weight:600;color:var(--c);font-size:14px;display:flex;justify-content:space-between;gap:6px}
+.card .sum{font-size:13px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.filter-note{font-size:13px;color:var(--muted);margin:6px 0 0;min-height:1.2em}
+.filter-note button{border:0;background:none;color:var(--tip);cursor:pointer;padding:0;text-decoration:underline}
+section.theme h2{font-size:16px;margin:20px 0 6px;color:var(--c);display:flex;gap:8px;align-items:baseline}
+section.theme h2 small{color:var(--muted);font-weight:400;font-size:13px}
+.row{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:6px;min-width:0}
+.row .t{font-weight:500;overflow-wrap:anywhere}
+.badge{font-family:"IBM Plex Mono",monospace;font-size:11px;padding:1px 6px;border-radius:4px;background:var(--chip);color:var(--muted);margin-right:6px;vertical-align:1px;white-space:nowrap}
+.new{font-size:11px;color:#fff;background:var(--ok);border-radius:4px;padding:1px 5px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.g{font-size:14px;margin-top:2px;overflow-wrap:anywhere}
+.m{font-size:12px;color:var(--muted);margin-top:4px;overflow-wrap:anywhere}
+.empty-state{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:28px 18px;text-align:center;color:var(--muted);margin-top:16px}
+details.health{margin-top:28px;font-size:12px;color:var(--muted)}
+details.health summary{cursor:pointer}
+details.health table{border-collapse:collapse;margin-top:6px;width:100%}
+details.health td{padding:3px 8px 3px 0;border-top:1px solid var(--line);vertical-align:top;overflow-wrap:anywhere}
+.err{color:var(--warn)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>AI 동향 수집함</h1>
+    <div class="status" id="status" aria-live="polite"></div>
+  </header>
+  <div class="filters">
+    <div class="seg" role="group" aria-label="기간" id="f-period">
+      <button data-v="3">3시간</button><button data-v="24">24시간</button><button data-v="168">7일</button>
+    </div>
+    <div class="seg" role="group" aria-label="출처" id="f-origin">
+      <button data-v="all">전체</button><button data-v="kr">국내</button><button data-v="intl">해외</button>
+    </div>
+  </div>
+  <div class="cards" id="cards"></div>
+  <p class="filter-note" id="filter-note"></p>
+  <main id="list"></main>
+  <details class="health" id="health"></details>
+</div>
+<script>
+const THEMES = [
+  ["tip", "실전 활용 팁"], ["agent", "에이전트·자동화"], ["code", "AI 코딩 도구"],
+  ["model", "모델·출시"], ["research", "연구·기술"], ["industry", "업계·정책·논쟁"],
+];
+const THEME_NAME = Object.fromEntries(THEMES);
+const SOURCE_LABEL = {gn: "긱뉴스", gnp: "GN⁺", hn: "HN", reddit: "Reddit", threads: "Threads", gpters: "GPTERS", web: "웹"};
+const DOMESTIC = new Set(["gn", "gnp", "gpters", "threads"]);
+const LATE_MS = 2 * 3600e3;
+const POLL_MS = 5 * 60e3;
+const STORE_KEY = "ai-trend-filters";
+
+const state = {items: [], status: null, loaded: false, error: null, period: 24, origin: "all", theme: null};
+try {
+  const saved = JSON.parse(localStorage.getItem(STORE_KEY) || "{}");
+  if ([3, 24, 168].includes(saved.period)) state.period = saved.period;
+  if (["all", "kr", "intl"].includes(saved.origin)) state.origin = saved.origin;
+} catch (_) {}
+
+function persist() {
+  try { localStorage.setItem(STORE_KEY, JSON.stringify({period: state.period, origin: state.origin})); } catch (_) {}
+}
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
+const num = s => esc(s).replace(/\d[\d,.]*/g, d => `<span class="mono">${d}</span>`);
+const safeUrl = u => /^https:\/\//i.test(u || "") ? u : null;
+
+function ago(iso, now = Date.now()) {
+  const t = Date.parse(iso);
+  if (isNaN(t)) return "-";
+  const m = Math.max(0, Math.floor((now - t) / 60e3));
+  if (m < 1) return "방금";
+  if (m < 60) return `${m}분 전`;
+  const h = Math.floor(m / 60);
+  if (h < 24) return `${h}시간 전`;
+  return `${Math.floor(h / 24)}일 전`;
+}
+
+function baseFiltered(now = Date.now()) {
+  const cutoff = now - state.period * 3600e3;
+  return state.items.filter(it => {
+    if (Date.parse(it.collected_at) < cutoff) return false;
+    if (state.origin === "kr" && !DOMESTIC.has(it.source)) return false;
+    if (state.origin === "intl" && DOMESTIC.has(it.source)) return false;
+    return THEME_NAME[it.theme] !== undefined;
+  });
+}
+
+function renderStatus() {
+  const el = document.getElementById("status");
+  const lr = state.status?.last_run;
+  const shown = visible().length;
+  if (state.error && !state.loaded) { el.innerHTML = `<span class="late-label">데이터를 불러오지 못했어요</span>`; return; }
+  if (!lr) { el.innerHTML = `<span><span class="dot late"></span>아직 수집 기록 없음</span>`; return; }
+  const late = Date.now() - Date.parse(lr) > LATE_MS;
+  el.innerHTML =
+    `<span><span class="dot${late ? " late" : ""}"></span>마지막 수집 ${num(ago(lr))}` +
+    `${late ? ` · <span class="late-label">지연됨</span>` : ""}</span>` +
+    `<span>표시 <b class="mono">${shown}</b>건</span>`;
+}
+
+function visible() {
+  const base = baseFiltered();
+  return state.theme ? base.filter(it => it.theme === state.theme) : base;
+}
+
+function renderCards() {
+  const base = baseFiltered();
+  const summaries = Object.fromEntries((state.status?.themes || []).map(t => [t.key, t.summary]));
+  document.getElementById("cards").innerHTML = THEMES.map(([k, name]) => {
+    const n = base.filter(it => it.theme === k).length;
+    const pressed = state.theme === k;
+    return `<button class="card${n ? "" : " empty"}" style="--c:var(--${k})" data-theme="${k}" aria-pressed="${pressed}">` +
+      `<div class="name"><span>${esc(name)}</span><span class="mono">${n}</span></div>` +
+      `<div class="sum">${esc(summaries[k] || (n ? "" : "이 기간엔 글이 없어요"))}</div></button>`;
+  }).join("");
+  document.getElementById("filter-note").innerHTML = state.theme
+    ? `‘${esc(THEME_NAME[state.theme])}’만 보는 중 · <button type="button" id="clear-theme">전체 테마 보기</button>` : "";
+}
+
+function row(it, lastRun) {
+  const url = safeUrl(it.url);
+  const title = url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${esc(it.title)}</a>` : esc(it.title);
+  const meta = [`${num(ago(it.collected_at))} 수집`];
+  if (it.score != null) meta.push(`▲${num(it.score)}`);
+  if (it.comments != null) meta.push(`댓글 ${num(it.comments)}`);
+  if (it.origin) meta.push(esc(it.origin));
+  const isNew = lastRun && it.collected_at === lastRun;
+  return `<article class="row"><div class="t"><span class="badge">${esc(SOURCE_LABEL[it.source] || it.source)}</span>${title}` +
+    `${isNew ? `<span class="new">새로 들어옴</span>` : ""}</div>` +
+    `<div class="g">${esc(it.gist)}</div><div class="m">${meta.join(" · ")}</div></article>`;
+}
+
+function renderList() {
+  const list = document.getElementById("list");
+  if (!state.loaded) { list.innerHTML = state.error ? `<div class="empty-state">${esc(state.error)}</div>` : ""; return; }
+  if (!state.items.length) {
+    list.innerHTML = `<div class="empty-state">아직 수집된 글이 없어요. 매시간 수집이 돌면 테마별로 묶인 글이 여기에 나타납니다.</div>`;
+    return;
+  }
+  const items = visible();
+  if (!items.length) {
+    list.innerHTML = `<div class="empty-state">이 조건에 맞는 글이 없어요. 기간을 넓히거나 출처를 전체로 바꿔 보세요.</div>`;
+    return;
+  }
+  const lastRun = state.status?.last_run;
+  list.innerHTML = THEMES.map(([k, name]) => {
+    const group = items.filter(it => it.theme === k).sort((a, b) =>
+      (Date.parse(b.collected_at) - Date.parse(a.collected_at)) || ((b.score ?? -1) - (a.score ?? -1)));
+    if (!group.length) return "";
+    return `<section class="theme" style="--c:var(--${k})" aria-label="${esc(name)}"><h2>${esc(name)}<small class="mono">${group.length}건</small></h2>` +
+      group.map(it => row(it, lastRun)).join("") + `</section>`;
+  }).join("");
+}
+
+function renderHealth() {
+  const s = state.status;
+  const el = document.getElementById("health");
+  if (!s?.sources) { el.innerHTML = ""; return; }
+  const rows = Object.entries(s.sources).map(([name, r]) =>
+    `<tr><td class="mono">${esc(name)}</td><td class="mono">${r.fetched ?? 0}건 수집 · ${r.kept ?? 0}건 저장</td>` +
+    `<td class="${r.error ? "err" : ""}">${esc(r.error || r.note || "정상")}</td></tr>`).join("");
+  const note = s.run?.note ? `<p class="err">${esc(s.run.note)}</p>` : "";
+  el.innerHTML = `<summary>수집 상태 (마지막 회차)</summary>${note}<table>${rows}</table>`;
+}
+
+function renderSegs() {
+  for (const [id, key] of [["f-period", "period"], ["f-origin", "origin"]]) {
+    for (const b of document.getElementById(id).querySelectorAll("button")) {
+      b.setAttribute("aria-pressed", String(b.dataset.v === String(state[key])));
+    }
+  }
+}
+
+function render() { renderSegs(); renderStatus(); renderCards(); renderList(); renderHealth(); }
+
+async function getJson(name) {
+  for (const base of ["data/", "../data/"]) {
+    try {
+      const r = await fetch(`${base}${name}?t=${Date.now()}`, {cache: "no-store"});
+      if (r.ok) return await r.json();
+    } catch (_) {}
+  }
+  throw new Error(`${name} 불러오기 실패`);
+}
+
+async function load() {
+  try {
+    const [items, status] = await Promise.all([getJson("items.json"), getJson("status.json")]);
+    state.items = Array.isArray(items.items) ? items.items : [];
+    state.status = status;
+    state.loaded = true;
+    state.error = null;
+  } catch (e) {
+    state.error = "데이터를 불러오지 못했어요. 잠시 후 다시 시도합니다.";
+  }
+  render();
+}
+
+document.getElementById("f-period").addEventListener("click", e => {
+  const v = e.target.closest("button")?.dataset.v; if (!v) return;
+  state.period = Number(v); persist(); render();
+});
+document.getElementById("f-origin").addEventListener("click", e => {
+  const v = e.target.closest("button")?.dataset.v; if (!v) return;
+  state.origin = v; persist(); render();
+});
+document.getElementById("cards").addEventListener("click", e => {
+  const k = e.target.closest(".card")?.dataset.theme; if (!k) return;
+  state.theme = state.theme === k ? null : k; render();
+});
+document.getElementById("filter-note").addEventListener("click", e => {
+  if (e.target.id === "clear-theme") { state.theme = null; render(); }
+});
+
+render();
+load();
+setInterval(render, 60e3);
+setInterval(load, POLL_MS);
+</script>
+</body>
+</html>
