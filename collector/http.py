@@ -6,7 +6,7 @@ import time
 import urllib.error
 import urllib.request
 
-UA = "ai-trend-collector/1.0 (+https://github.com/js87ahnx/ai-trend-collector)"
+UA = "ai-trend-collector/1.0 (+https://github.com/js87ahnx-droid/ai-trend-collector)"
 RETRY_STATUS = {429, 500, 502, 503, 504}
 
 
