@@ -459,6 +459,40 @@
    "score": 4,
    "comments": 0,
    "origin": "sketch.wakeshift.ai"
+  },
+  {
+   "id": "hn-50272479",
+   "title": "Sleep framework: A new way for LLMs to retain knowledge in continual learning",
+   "url": "https://research.google/blog/the-sleep-framework-a-new-way-for-llms-to-retain-knowledge-in-continual-learning/",
+   "source": "hn",
+   "theme": "research",
+   "gist": "수면 과정을 본뜬 단계로 지속 학습 중 LLM이 기존 지식을 덜 잊게 하는 새 프레임워크 논문",
+   "collected_at": "2026-10-30T23:12:03Z",
+   "score": 146,
+   "comments": 12,
+   "origin": "research.google"
+  },
+  {
+   "id": "gnp-36302",
+   "title": "Northflank 침해 사고 발생",
+   "url": "https://news.hada.io/topic?id=36302",
+   "source": "gnp",
+   "theme": "industry",
+   "gist": "Northflank 침해로 환경 변수 노출 우려, AI API 키 등 시크릿을 즉시 교체하라는 권고",
+   "collected_at": "2026-10-30T23:12:03Z",
+   "origin": "news.hada.io"
+  },
+  {
+   "id": "hn-50304122",
+   "title": "Cisco gives engineer unlimited AI tokens to rewrite legacy code",
+   "url": "https://fortune.com/2026/10/30/cisco-president-jeetu-patel-gen-z-27-year-old-unlimited-ai-tokens-rewrite-legacy-code-entry-level-jobs/",
+   "source": "hn",
+   "theme": "code",
+   "gist": "시스코가 레거시 코드 재작성을 위해 엔지니어에게 AI 토큰을 무제한 지급한 사례와 그 논쟁",
+   "collected_at": "2026-10-30T23:12:03Z",
+   "score": 72,
+   "comments": 71,
+   "origin": "fortune.com"
   }
  ]
 }
