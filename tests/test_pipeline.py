@@ -1,34 +1,58 @@
 import json
+import threading
 from datetime import datetime, timedelta, timezone
 from types import SimpleNamespace
 
 import pytest
 
-from collector import classify, main, store
+from collector import classify, detail, main, store
 from collector.sources.base import raw
 
 NOW = datetime(2026, 10, 30, 12, 37, tzinfo=timezone.utc)
+DETAIL = {"points": ["핵심 하나", "핵심 둘", "핵심 셋"], "steps": ["해보기"], "extra": "",
+          "figure": {"type": "flow", "title": "", "before": "", "after": "", "before_label": "", "after_label": "",
+                     "steps": ["입력", "출력"], "unit": "", "bars": [], "text": "", "speaker": ""}}
+
+
+def msg(payload, stop_reason="end_turn"):
+    text = json.dumps(payload, ensure_ascii=False)
+    return SimpleNamespace(stop_reason=stop_reason,
+                           content=[SimpleNamespace(type="thinking"), SimpleNamespace(type="text", text=text)])
 
 
 class FakeClient:
-    """client.beta.messages.create 흉내. 요청을 기록하고 준비된 JSON을 차례로 돌려준다."""
+    """분류 요청(tools 없음)과 상세 요청(web_fetch 도구)을 구분해 응답한다."""
 
-    def __init__(self, *payloads, stop_reason="end_turn"):
-        self.payloads = list(payloads)
+    def __init__(self, classify_fn=None, detail_fn=None):
+        self.classify_fn = classify_fn or (lambda kw: {"results": []})
+        self.detail_fn = detail_fn or (lambda kw: msg(DETAIL))
         self.calls = []
-        self.stop_reason = stop_reason
+        self.lock = threading.Lock()
         self.beta = SimpleNamespace(messages=SimpleNamespace(create=self._create))
 
     def _create(self, **kw):
-        self.calls.append(kw)
-        p = self.payloads.pop(0)
-        text = json.dumps(p(kw) if callable(p) else p, ensure_ascii=False)
-        return SimpleNamespace(stop_reason=self.stop_reason,
-                               content=[SimpleNamespace(type="thinking"), SimpleNamespace(type="text", text=text)])
+        with self.lock:
+            self.calls.append(kw)
+        if kw.get("tools"):
+            return self.detail_fn(kw)
+        out = self.classify_fn(kw)
+        return out if isinstance(out, SimpleNamespace) else msg(out)
+
+    def classify_calls(self):
+        return [c for c in self.calls if not c.get("tools")]
 
 
 def r(id_, title, source="hn", **kw):
     return raw(id=id_, title=title, url=f"https://ex.com/{id_}", source=source, **kw)
+
+
+def ids_in(kw):
+    return [json.loads(l)["id"] for l in kw["messages"][0]["content"].splitlines() if l.startswith("{")]
+
+
+def label_all(cat="tip", pick=5, replaces=""):
+    return lambda kw: {"results": [{"id": i, "skip": False, "cat": cat, "headline": f"{i} 헤드라인", "tag": "5분",
+                                    "why": "이유", "pick": pick, "replaces": replaces} for i in ids_in(kw)]}
 
 
 def test_prefilter_general_sources_need_ai_words_and_ads_dropped():
@@ -38,51 +62,62 @@ def test_prefilter_general_sources_need_ai_words_and_ads_dropped():
         r("gn-3", "클로드로 회의록 자동화", source="gn"),
         r("gpters-4", "주간 회고", source="gpters"),
         r("gpters-5", "ChatGPT 강의 오픈! 얼리버드 할인", source="gpters"),
+        r("pod-6", "Gardening with grandpa", source="pod"),
+        r("ph-7", "AI notetaker for meetings", source="ph"),
     ]
-    assert [c["id"] for c in classify.prefilter(cands)] == ["hn-1", "gn-3", "gpters-4"]
+    assert [c["id"] for c in classify.prefilter(cands)] == ["hn-1", "gn-3", "gpters-4", "ph-7"]
 
 
-def test_classify_drops_skip_unknown_and_bad_theme():
-    cands = [r("hn-1", "a"), r("hn-2", "b"), r("hn-3", "c")]
-    client = FakeClient({"results": [
-        {"id": "hn-1", "skip": False, "theme": "model", "gist": "새 모델 공개"},
-        {"id": "hn-2", "skip": True, "theme": "none", "gist": ""},
-        {"id": "hn-9", "skip": False, "theme": "tip", "gist": "없는 id"},
-        {"id": "hn-3", "skip": False, "theme": "none", "gist": "x"},
-        {"id": "hn-1", "skip": False, "theme": "tip", "gist": "중복"},
-    ]})
-    out = classify.classify(cands, client)
-    assert [(o["id"], o["theme"]) for o in out] == [("hn-1", "model")]
-    req = client.calls[0]
-    assert req["model"] == classify.MODEL and req["fallbacks"] == "default"
-    assert req["output_config"]["format"]["type"] == "json_schema"
-    assert "hn-3" in req["messages"][0]["content"]
-
-
-def test_classify_sends_stored_titles_for_cross_run_dedupe():
-    client = FakeClient({"results": []})
-    classify.classify([r("hn-1", "a")], client, ["We ran AI agent swarms in Minecraft"])
+def test_classify_filters_and_sorts_by_pick():
+    cands = [r("hn-1", "a"), r("hn-2", "b"), r("hn-3", "c"), r("hn-4", "d")]
+    res = [
+        {"id": "hn-1", "skip": False, "cat": "tool", "headline": "무료 CLI", "tag": "무료", "why": "w", "pick": 4, "replaces": "x-9"},
+        {"id": "hn-2", "skip": True, "cat": "none", "headline": "", "tag": "", "why": "", "pick": 0, "replaces": ""},
+        {"id": "hn-3", "skip": False, "cat": "model", "headline": "h", "tag": "t", "why": "", "pick": 9, "replaces": ""},
+        {"id": "hn-4", "skip": False, "cat": "tip", "headline": "팁", "tag": "", "why": "", "pick": 15, "replaces": "gn-1"},
+        {"id": "hn-9", "skip": False, "cat": "tip", "headline": "없는 id", "tag": "", "why": "", "pick": 5, "replaces": ""},
+    ]
+    client = FakeClient(lambda kw: {"results": res})
+    stored = [{"id": "gn-1", "cat": "tip", "headline": "예전 팁"}]
+    out = classify.classify(cands, client, stored)
+    assert [(o["id"], o["pick"], o["replaces"]) for o in out] == [("hn-4", 10, "gn-1"), ("hn-1", 4, None)]
+    assert out[0]["tag"] == "참고"
     prompt = client.calls[0]["messages"][0]["content"]
-    assert "- We ran AI agent swarms in Minecraft" in prompt and "같은 소식" in prompt
-    classify.classify([r("hn-1", "a")], FakeClient({"results": []}))   # 저장 글 없어도 동작
+    assert "gn-1 | tip | 예전 팁" in prompt and client.calls[0]["fallbacks"] == "default"
 
 
-def test_run_passes_recent_titles(tmp_path):
-    main.run(NOW, tmp_path, FakeClient(label_all, {"themes": []}), sources=[("hn", Good)])
-
-    class More:
-        @staticmethod
-        def fetch(ctx):
-            return [r("hn-20", "Another LLM release")]
-
-    client = FakeClient(label_all, {"themes": []})
-    main.run(NOW + timedelta(hours=1), tmp_path, client, sources=[("hn", More)])
-    assert "- Claude agent memory tips" in client.calls[0]["messages"][0]["content"]
+def test_classify_excludes_superseded_from_stored():
+    client = FakeClient()
+    classify.classify([r("hn-1", "a")], client, [{"id": "gn-1", "cat": "tip", "headline": "옛 팁", "superseded_by": "x"}])
+    assert "옛 팁" not in client.calls[0]["messages"][0]["content"]
 
 
 def test_refusal_raises():
     with pytest.raises(classify.LLMError):
-        classify.classify([r("hn-1", "a")], FakeClient({"results": []}, stop_reason="refusal"))
+        classify.classify([r("hn-1", "a")], FakeClient(lambda kw: msg({"results": []}, "refusal")))
+
+
+def test_detail_uses_web_fetch_and_continues_after_pause():
+    seq = [msg({}, "pause_turn"), msg(DETAIL)]
+    client = FakeClient(detail_fn=lambda kw: seq.pop(0))
+    item = r("hn-1", "t") | {"headline": "h", "cat": "tip"}
+    out = detail.write(item, client)
+    assert out["detail"]["points"][0] == "핵심 하나"
+    first, second = client.calls
+    assert first["tools"][0]["type"] == "web_fetch_20260209"
+    assert "https://ex.com/hn-1" in first["messages"][0]["content"]
+    assert second["messages"][-1]["role"] == "assistant"
+
+
+def test_detail_failure_isolated():
+    def det(kw):
+        if "hn-2" in kw["messages"][0]["content"]:
+            raise RuntimeError("fetch 실패")
+        return msg(DETAIL)
+
+    items = [r(f"hn-{i}", "t") | {"headline": "h", "cat": "tip"} for i in (1, 2, 3)]
+    ok, errs = detail.write_all(items, FakeClient(detail_fn=det))
+    assert [o["id"] for o in ok] == ["hn-1", "hn-3"] and "hn-2" in errs[0]
 
 
 class Boom:
@@ -99,27 +134,35 @@ class Good:
                 r("hn-12", "GPT prompt trick", score=5)]
 
 
-def label_all(kw):
-    ids = [json.loads(l)["id"] for l in kw["messages"][0]["content"].splitlines() if l.startswith("{")]
-    return {"results": [{"id": i, "skip": False, "theme": "tip", "gist": f"{i} 요약"} for i in ids]}
-
-
-def test_run_isolates_source_failure_and_writes_status(tmp_path, monkeypatch):
+def test_run_end_to_end(tmp_path, monkeypatch):
     monkeypatch.delenv("SEARCH_API_KEY", raising=False)
-    old = {"id": "hn-1", "title": "old", "url": "https://ex.com/old", "source": "hn", "theme": "model",
-           "gist": "오래됨", "collected_at": store.iso(NOW - timedelta(days=8))}
-    store.save_json(tmp_path / "items.json", {"items": [old]})
-    client = FakeClient(label_all, {"themes": [{"key": "tip", "summary": "프롬프트 요령이 화제"},
-                                               {"key": "code", "summary": "없는 테마"}]})
+    old = {"id": "hn-1", "title": "old", "url": "https://ex.com/old", "source": "hn", "cat": "tip", "headline": "옛",
+           "tag": "t", "detail": DETAIL, "collected_at": store.iso(NOW - timedelta(days=8))}
+    store.save_json(tmp_path / "items.json", store.items_doc([old]))
+    client = FakeClient(label_all())
     st = main.run(NOW, tmp_path, client, sources=[("boom", Boom), ("hn", Good)])
 
     items = store.load_items(tmp_path / "items.json")
-    assert sorted(i["id"] for i in items) == ["hn-10", "hn-12"]          # 8일 지난 글 삭제, 비AI 글 제외
-    assert all(i["collected_at"] == st["last_run"] for i in items)
+    assert sorted(i["id"] for i in items) == ["hn-10", "hn-12"]           # 8일 지난 글 삭제, 비AI 글 제외
+    it = items[0]
+    assert it["collected_at"] == st["last_run"] and it["detail"]["figure"]["type"] == "flow"
+    assert "body" not in it and "excerpt" not in it
     assert "소스 다운" in st["sources"]["boom"]["error"]
     assert st["sources"]["hn"] == {"fetched": 3, "kept": 2}
-    assert st["themes"] == [{"key": "tip", "summary": "프롬프트 요령이 화제"}]
-    assert len(client.calls) == 2
+    assert len(client.classify_calls()) == 1 and len(client.calls) == 3      # 분류 1 + 상세 2
+
+
+def test_run_replacement_marks_old(tmp_path):
+    main.run(NOW, tmp_path, FakeClient(label_all()), sources=[("hn", Good)])
+
+    class Newer:
+        @staticmethod
+        def fetch(ctx):
+            return [r("hn-20", "Better Claude agent memory approach")]
+
+    main.run(NOW + timedelta(hours=1), tmp_path, FakeClient(label_all(replaces="hn-10")), sources=[("hn", Newer)])
+    items = {i["id"]: i for i in store.load_items(tmp_path / "items.json")}
+    assert items["hn-10"]["superseded_by"] == "hn-20" and items["hn-20"]["replaces"] == "hn-10"
 
 
 def test_run_without_key_still_updates_last_run(tmp_path, monkeypatch):
@@ -130,10 +173,8 @@ def test_run_without_key_still_updates_last_run(tmp_path, monkeypatch):
     assert store.load_items(tmp_path / "items.json") == []
 
 
-def test_second_run_skips_known_and_keeps_themes(tmp_path):
-    main.run(NOW, tmp_path, FakeClient(label_all, {"themes": [{"key": "tip", "summary": "요약"}]}),
-             sources=[("hn", Good)])
+def test_second_run_skips_known(tmp_path):
+    main.run(NOW, tmp_path, FakeClient(label_all()), sources=[("hn", Good)])
     client = FakeClient()
     st = main.run(NOW + timedelta(hours=1), tmp_path, client, sources=[("hn", Good)])
     assert client.calls == [] and st["run"]["added"] == 0
-    assert st["themes"] == [{"key": "tip", "summary": "요약"}]

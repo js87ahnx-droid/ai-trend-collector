@@ -29,6 +29,7 @@ def raw(*, id, title, url, source, score=None, comments=None, excerpt="", publis
         "comments": comments,
         "origin": urlparse(url).hostname.removeprefix("www.") if url else None,
         "excerpt": clean(excerpt)[:300],
+        "body": clean(excerpt)[:3000],   # 상세 작성 때 원문을 못 읽으면 쓰는 대체 본문 (저장하지 않음)
         "published_at": published_at,
     }
 
