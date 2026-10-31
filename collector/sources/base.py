@@ -16,6 +16,7 @@ class Context:
     known_ids: set[str] = field(default_factory=set)
     run_index: int = 0          # 회차 번호 — 검색 키워드 순환에 사용
     search_api_key: str | None = None
+    notes: dict = field(default_factory=dict)   # 소스가 남기는 부분 실패 메모 (status에 기록)
 
 
 def raw(*, id, title, url, source, score=None, comments=None, excerpt="", published_at=None) -> dict:

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xml:lang="en-US" xmlns="http://www.w3.org/2005/Atom"><title>Product Hunt</title>
+  <entry>
+    <id>tag:www.producthunt.com,2005:Post/1297603</id>
+    <published>2026-10-29T12:23:23-07:00</published>
+    <updated>2026-10-30T18:21:37-07:00</updated>
+    <link rel="alternate" type="text/html" href="https://www.producthunt.com/products/sample-ai"/>
+    <title>Sample AI Notetaker</title>
+    <content type="html">&lt;p&gt;Turns meeting audio into to-dos&lt;/p&gt;</content>
+  </entry>
+</feed>
