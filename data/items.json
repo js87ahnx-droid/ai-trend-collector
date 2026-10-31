@@ -425,31 +425,6 @@
    "pick": 7
   },
   {
-   "id": "hn-50296730",
-   "title": "Building an AI-native engineering org",
-   "url": "https://twitter.com/sgondala2/status/2115832070274723875",
-   "source": "hn",
-   "cat": "voice",
-   "headline": "AI 네이티브 엔지니어링 조직 만들기 (원문 미확인)",
-   "tag": "에세이",
-   "detail": {
-    "points": [
-     "원문(X 게시물)을 불러오지 못했고 수집된 본문도 없어 내용을 확인하지 못했습니다.",
-     "확인된 정보는 제목과 작성자 계정(@sgondala2)뿐입니다.",
-     "원문 확인 전에는 구체적인 방법이나 수치를 인용하지 않는 것이 좋습니다."
-    ],
-    "steps": [],
-    "extra": "원문을 확인할 수 없어 '실제 방법'을 다룬다는 기존 헤드라인이 맞는지 검증하지 못했습니다. 그래서 헤드라인의 단정적인 표현을 빼고 미확인 상태라고 표시했습니다. 본문 텍스트를 확보하면 다시 요약할 수 있습니다.",
-    "figure": null
-   },
-   "collected_at": "2026-10-31T02:23:39Z",
-   "score": 110,
-   "comments": 149,
-   "origin": "twitter.com",
-   "why": "댓글 149개로 논쟁된 조직 운영 사례, 팀 AI 도입 설계에 참고",
-   "pick": 6
-  },
-  {
    "id": "pod-f41fca18f2",
    "title": "Grok vs. Dot vs. Muse vs. Claude Duet: which one crushes the competition?",
    "url": "https://www.lennysnewsletter.com/p/grok-vs-dot-vs-muse-vs-claude-duet",
