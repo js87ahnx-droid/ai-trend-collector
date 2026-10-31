@@ -44,6 +44,8 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
             log.warning("수집 실패 %s: %s", name, e)
     if ctx.notes.get("feeds") and "feeds" in report:
         report["feeds"]["note"] = "; ".join(ctx.notes["feeds"])[:300]
+    if ctx.notes.get("gpters") and "gpters" in report:
+        report["gpters"]["note"] = ctx.notes["gpters"][:300]
     if not ctx.search_api_key and "websearch" in report:
         report["websearch"]["note"] = "SEARCH_API_KEY 없음 — 건너뜀"
 

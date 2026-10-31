@@ -109,6 +109,14 @@ def test_detail_uses_web_fetch_and_continues_after_pause():
     assert second["messages"][-1]["role"] == "assistant"
 
 
+def test_detail_can_correct_headline():
+    item = r("hn-1", "t") | {"headline": "2.1.312·313 점검", "cat": "shift"}
+    out = detail.write(item, FakeClient(detail_fn=lambda kw: msg(DETAIL | {"headline": "2.1.313 점검"})))
+    assert out["headline"] == "2.1.313 점검" and "headline" not in out["detail"]
+    same = detail.write(item, FakeClient(detail_fn=lambda kw: msg(DETAIL | {"headline": " "})))
+    assert same["headline"] == "2.1.312·313 점검"
+
+
 def test_detail_failure_isolated():
     def det(kw):
         if "hn-2" in kw["messages"][0]["content"]:

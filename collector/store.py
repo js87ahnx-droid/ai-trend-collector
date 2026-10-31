@@ -71,10 +71,10 @@ def clean_figure(fig) -> dict | None:
         if not (before and after):
             return None
         return {"type": t, "title": title, "before": before, "after": after,
-                "before_label": _short(fig.get("before_label"), 16) or "전",
-                "after_label": _short(fig.get("after_label"), 16) or "후"}
+                "before_label": _short(fig.get("before_label"), 24) or "전",
+                "after_label": _short(fig.get("after_label"), 24) or "후"}
     if t == "flow":
-        steps = [s for s in (_short(x, 24) for x in fig.get("steps") or []) if s][:5]
+        steps = [s for s in (_short(x, 30) for x in fig.get("steps") or []) if s][:5]
         return {"type": t, "title": title, "steps": steps} if len(steps) >= 2 else None
     if t == "bars":
         bars = []
@@ -94,11 +94,11 @@ def clean_figure(fig) -> dict | None:
 def clean_detail(d) -> dict | None:
     if not isinstance(d, dict):
         return None
-    points = [p for p in (_short(x, 160) for x in d.get("points") or []) if p][:3]
-    steps = [s for s in (_short(x, 200) for x in d.get("steps") or []) if s][:6]
+    points = [p for p in (_short(x, 200) for x in d.get("points") or []) if p][:3]
+    steps = [s for s in (_short(x, 320) for x in d.get("steps") or []) if s][:6]
     if len(points) < 2:
         return None
-    return {"points": points, "steps": steps, "extra": _short(d.get("extra"), 600) or "",
+    return {"points": points, "steps": steps, "extra": _short(d.get("extra"), 900) or "",
             "figure": clean_figure(d.get("figure"))}
 
 

@@ -51,14 +51,25 @@ def fetch(ctx: Context, sleep=time.sleep) -> list[dict]:
     cand = [(u, m) for u, m in recent if parse_iso(m) > cutoff and post_id(u) and post_id(u) not in ctx.known_ids]
     cand.sort(key=lambda x: x[1], reverse=True)
     out = []
+    skipped = {"no_meta": 0, "old": 0, "error": 0}
     for url, _ in cand[:MAX_PAGES]:
-        meta = parse_post(http.get_text(url))
-        pub = meta.get("article:published_time")
-        if not pub or parse_iso(pub) <= cutoff or not meta.get("og:title"):
+        try:
+            meta = parse_post(http.get_text(url))
+        except Exception:
+            skipped["error"] += 1
             continue
-        out.append(raw(id=post_id(url), title=meta["og:title"], url=url, source="gpters",
-                       excerpt=meta.get("og:description", ""), published_at=pub))
+        pub = meta.get("article:published_time")
+        if not pub or not meta.get("og:title"):
+            skipped["no_meta"] += 1
+        elif parse_iso(pub) <= cutoff:
+            skipped["old"] += 1
+        else:
+            out.append(raw(id=post_id(url), title=meta["og:title"], url=url, source="gpters",
+                           excerpt=meta.get("og:description", ""), published_at=pub))
         sleep(0.5)
     if not out and errors and len(errors) == len(SPACES):
         raise http.FetchError("; ".join(errors))
+    ctx.notes["gpters"] = (f"sitemap {len(recent)} · 최근 {len(cand)} · 페이지 {min(len(cand), MAX_PAGES)}"
+                           f" · 메타 없음 {skipped['no_meta']} · 48시간 초과 {skipped['old']} · 오류 {skipped['error']}"
+                           + (f" · 공간 실패 {'; '.join(errors)}" if errors else ""))
     return out
