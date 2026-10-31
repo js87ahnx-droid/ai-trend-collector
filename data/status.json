@@ -1,43 +1,21 @@
 {
- "last_run": "2026-10-30T23:12:03Z",
- "themes": [
-  {
-   "key": "tip",
-   "summary": "AI 영상통화·도구 가격 비교 등 활용 소개와 함께 LLM 문체 거부감 경계론"
-  },
-  {
-   "key": "agent",
-   "summary": "Claude Code·브라우저 에이전트로 영업·마케팅 자동화 확산, 게임 속 에이전트 군집 실험도"
-  },
-  {
-   "key": "code",
-   "summary": "Claude Code·Codex 주변 도구 쏟아지며 맥락 유지·멀티 에이전트 관리와 확장 보안 경고 부상"
-  },
-  {
-   "key": "model",
-   "summary": "Mistral Large 4 가중치 공개와 Gemini 4 Carbon 제한 출시 속 벤치마크 신뢰성 고민"
-  },
-  {
-   "key": "research",
-   "summary": "초소형 월드 모델·저비용 학습 실험 활발, AI 통계 인용과 데이터 에이전트 한계 드러나"
-  },
-  {
-   "key": "industry",
-   "summary": "AI 비용·거품 우려로 기술주 하락, Proton 내부 갈등 등 강압적 AI 전환과 탈숙련화 논란"
-  }
- ],
+ "last_run": "2026-10-31T01:38:06Z",
  "sources": {
   "gn": {
    "fetched": 47,
-   "kept": 1
+   "kept": 7
   },
   "hn": {
-   "fetched": 26,
+   "fetched": 30,
    "kept": 2
   },
   "gpters": {
    "fetched": 0,
    "kept": 0
+  },
+  "feeds": {
+   "fetched": 51,
+   "kept": 1
   },
   "websearch": {
    "fetched": 0,
@@ -46,10 +24,11 @@
   }
  },
  "run": {
-  "candidates": 73,
-  "ai_filtered": 24,
-  "new": 10,
-  "added": 3,
-  "total": 46
+  "candidates": 128,
+  "ai_filtered": 49,
+  "new": 40,
+  "labeled": 26,
+  "added": 10,
+  "total": 10
  }
 }
