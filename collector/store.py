@@ -12,7 +12,7 @@ MAX_PER_RUN = 10
 RETENTION = timedelta(days=7)
 SUPERSEDED_RETENTION = timedelta(days=3)
 REQUIRED = ("id", "title", "url", "source", "cat", "headline", "tag", "detail", "collected_at")
-OPTIONAL = ("score", "comments", "origin", "why", "pick", "replaces")
+OPTIONAL = ("score", "comments", "origin", "why", "pick", "buzz", "replaces")
 FIGURE_TYPES = ("compare", "flow", "bars", "quote")
 
 
@@ -99,7 +99,18 @@ def clean_detail(d) -> dict | None:
     if len(points) < 2:
         return None
     return {"points": points, "steps": steps, "extra": _short(d.get("extra"), 900) or "",
-            "figure": clean_figure(d.get("figure"))}
+            "figure": clean_figure(d.get("figure")), "terms": clean_terms(d.get("terms"))}
+
+
+def clean_terms(terms) -> list[dict]:
+    """모르는 말 풀이 — {term, meaning} 최대 3개, 둘 중 하나라도 비면 버림."""
+    out = []
+    for t in terms if isinstance(terms, list) else []:
+        if isinstance(t, dict):
+            term, meaning = _short(t.get("term"), 20), _short(t.get("meaning"), 80)
+            if term and meaning:
+                out.append({"term": term, "meaning": meaning})
+    return out[:3]
 
 
 def valid_item(item: dict) -> bool:
@@ -157,6 +168,7 @@ def add_items(existing: list[dict], new: list[dict], now: datetime) -> tuple[lis
         item = {k: raw.get(k) for k in REQUIRED + OPTIONAL}
         item["collected_at"] = stamp
         item["detail"] = clean_detail(item.get("detail"))
+        item["buzz"] = item.get("buzz") is True or None   # 화제가 아니면 필드 생략
         old = by_id.get(item.get("replaces") or "")
         if not old or old.get("superseded_by"):
             item["replaces"] = None

@@ -103,3 +103,18 @@ def test_old_schema_file_is_ignored(tmp_path):
     assert store.load_items(p) == []
     store.save_json(p, store.items_doc([item(1)]))
     assert len(store.load_items(p)) == 1
+
+
+def test_buzz_kept_only_when_true():
+    _, added = store.add_items([], [item(1, buzz=True), item(2, buzz="yes"), item(3)], NOW)
+    assert added[0]["buzz"] is True
+    assert "buzz" not in added[1] and "buzz" not in added[2]
+
+
+def test_terms_cleaned():
+    terms = [{"term": "MCP", "meaning": "AI에 외부 자료를 꽂아 쓰는 연결 방식"}, {"term": "", "meaning": "빈 용어"},
+             {"term": "x" * 40, "meaning": "m" * 200}, "문자열", {"term": "a", "meaning": "b"}, {"term": "c", "meaning": "d"}]
+    d = store.clean_detail(DETAIL | {"terms": terms})
+    assert len(d["terms"]) == 3 and d["terms"][0]["term"] == "MCP"
+    assert len(d["terms"][1]["term"]) == 20 and len(d["terms"][1]["meaning"]) == 80
+    assert store.clean_detail(DETAIL)["terms"] == []
