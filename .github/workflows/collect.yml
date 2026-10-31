@@ -4,6 +4,11 @@ on:
   schedule:
     - cron: "37 * * * *"     # 매시 37분 (정각 혼잡 회피)
   workflow_dispatch:
+    inputs:
+      rewrite:
+        description: "저장된 글을 쉬운 말로 다시 쓰기 (문체 변경 때 한 번)"
+        type: boolean
+        default: false
   push:
     branches: [main]
     paths: ["web/**", ".github/workflows/collect.yml"]
@@ -33,6 +38,12 @@ jobs:
 
       - name: Test
         run: python -m pytest -q
+
+      - name: Rewrite stored items
+        if: github.event_name == 'workflow_dispatch' && inputs.rewrite
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python -m collector.rewrite
 
       - name: Collect
         if: github.event_name != 'push'

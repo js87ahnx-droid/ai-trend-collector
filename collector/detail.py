@@ -12,15 +12,17 @@ WORKERS = 4
 WEB_FETCH = {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": 2, "max_content_tokens": 5000}
 MAX_CONTINUE = 3
 
-PROMPT = """너는 AI에 관심 있는 일반 직장인을 위한 큐레이터다. 아래 글의 원문을 web_fetch로 읽고(실패하면 '수집된 본문'만 사용)
-독자가 원문을 열지 않고도 이해하고 바로 써먹을 수 있게 한국어로 정리하라.
-
-문체:
+STYLE = """문체:
 - 독자는 개발자가 아닐 수도 있다. 관련 지식이 없는 성인이 한 번 읽고 이해할 수 있게 쓴다.
   아이에게 말하듯 풀어 쓰지는 않는다. "~해요/~합니다"체, 짧은 문장.
 - 전문용어는 쉬운 말로 바꾸거나, 꼭 필요하면 그대로 쓰고 terms에서 풀이한다. 영어 약어를 늘어놓지 않는다.
 - 제품명·버전·숫자는 정확히 살린다.
+"""
 
+PROMPT = """너는 AI에 관심 있는 일반 직장인을 위한 큐레이터다. 아래 글의 원문을 web_fetch로 읽고(실패하면 '수집된 본문'만 사용)
+독자가 원문을 열지 않고도 이해하고 바로 써먹을 수 있게 한국어로 정리하라.
+
+{style}
 규칙:
 - insufficient: 원문을 읽지 못했고 수집된 본문만으로는 핵심 3가지를 사실대로 쓸 수 없으면 true
   (그때 나머지 필드는 비워도 된다). 그 외엔 false.
@@ -102,7 +104,7 @@ class Insufficient(classify.LLMError):
 
 def write(item: dict, client) -> dict:
     """item에 detail을 붙여 반환. 서버 도구가 pause_turn으로 멈추면 이어서 요청."""
-    prompt = PROMPT.format(title=item["title"], headline=item["headline"], cat=item["cat"], url=item["url"],
+    prompt = PROMPT.format(style=STYLE, title=item["title"], headline=item["headline"], cat=item["cat"], url=item["url"],
                            body=(item.get("body") or item.get("excerpt") or "(없음)")[:3000])
     messages = [{"role": "user", "content": prompt}]
     for _ in range(MAX_CONTINUE):
