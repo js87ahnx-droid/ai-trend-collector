@@ -79,8 +79,9 @@ def test_classify_filters_and_sorts_by_pick():
     ]
     client = FakeClient(lambda kw: {"results": res})
     stored = [{"id": "gn-1", "cat": "tip", "headline": "예전 팁"}]
-    out = classify.classify(cands, client, stored)
+    out, skipped = classify.classify(cands, client, stored)
     assert [(o["id"], o["pick"], o["replaces"]) for o in out] == [("hn-4", 10, "gn-1"), ("hn-1", 4, None)]
+    assert skipped == ["hn-2", "hn-3"]                     # 응답에 없는 id는 어느 쪽에도 없음
     assert out[0]["tag"] == "참고"
     prompt = client.calls[0]["messages"][0]["content"]
     assert "gn-1 | tip | 예전 팁" in prompt and client.calls[0]["fallbacks"] == "default"
@@ -124,8 +125,20 @@ def test_detail_failure_isolated():
         return msg(DETAIL)
 
     items = [r(f"hn-{i}", "t") | {"headline": "h", "cat": "tip"} for i in (1, 2, 3)]
-    ok, errs = detail.write_all(items, FakeClient(detail_fn=det))
-    assert [o["id"] for o in ok] == ["hn-1", "hn-3"] and "hn-2" in errs[0]
+    ok, errs, thin = detail.write_all(items, FakeClient(detail_fn=det))
+    assert [o["id"] for o in ok] == ["hn-1", "hn-3"] and "hn-2" in errs[0] and thin == []
+
+
+def test_detail_insufficient_reported_separately():
+    def det(kw):
+        if "hn-2" in kw["messages"][0]["content"]:
+            return msg(DETAIL | {"insufficient": True})
+        return msg(DETAIL | {"insufficient": False})
+
+    items = [r(f"hn-{i}", "t") | {"headline": "h", "cat": "tip"} for i in (1, 2)]
+    ok, errs, thin = detail.write_all(items, FakeClient(detail_fn=det))
+    assert [o["id"] for o in ok] == ["hn-1"] and errs == [] and thin == ["hn-2"]
+    assert "insufficient" not in ok[0]["detail"]
 
 
 class Boom:
@@ -179,6 +192,24 @@ def test_run_without_key_still_updates_last_run(tmp_path, monkeypatch):
     assert st["last_run"] == "2026-10-30T12:37:00Z"
     assert "ANTHROPIC_API_KEY" in st["run"]["note"]
     assert store.load_items(tmp_path / "items.json") == []
+
+
+def test_skipped_ids_remembered_and_expire(tmp_path):
+    def judge(kw):
+        return {"results": [{"id": i, "skip": i == "hn-12", "cat": "none" if i == "hn-12" else "tip",
+                             "headline": "h", "tag": "t", "why": "", "pick": 1, "replaces": ""} for i in ids_in(kw)]}
+
+    main.run(NOW, tmp_path, FakeClient(judge), sources=[("hn", Good)])
+    mem = json.loads((tmp_path / "skipped.json").read_text(encoding="utf-8"))
+    assert list(mem) == ["hn-12"]
+    client = FakeClient()
+    main.run(NOW + timedelta(hours=1), tmp_path, client, sources=[("hn", Good)])
+    assert client.calls == []                                # 건너뛴 글을 다시 보내지 않음
+    client = FakeClient(judge)
+    main.run(NOW + timedelta(days=9), tmp_path, client, sources=[("hn", Good)])
+    assert ids_in(client.calls[0]) == ["hn-12"]              # 8일 지나면 기억에서 빠짐
+    st = json.loads((tmp_path / "status.json").read_text(encoding="utf-8"))
+    assert "skipped" not in st
 
 
 def test_second_run_skips_known(tmp_path):

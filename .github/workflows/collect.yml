@@ -46,7 +46,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add data/items.json data/status.json
+          git add data/items.json data/status.json data/skipped.json
           git commit -m "data: $(date -u +%Y-%m-%dT%H:%MZ) 수집" || exit 0
           for i in 1 2 3; do git pull --rebase -X theirs origin main && git push && break; sleep 5; done
 

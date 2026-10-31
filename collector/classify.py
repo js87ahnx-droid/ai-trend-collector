@@ -133,11 +133,12 @@ def _clip(s, n: int) -> str:
     return (s or "").strip()[:n]
 
 
-def classify(cands: list[dict], client, stored: list[dict] = ()) -> list[dict]:
-    """cands에 cat·headline·tag·why·pick·replaces를 붙여 pick 높은 순으로 반환.
-    stored: 최근 저장된 글 — 같은 소식 재수집을 거르고 대체 관계를 판정하는 데 쓴다."""
+def classify(cands: list[dict], client, stored: list[dict] = ()) -> tuple[list[dict], list[str]]:
+    """(통과한 글, 판정 결과 건너뛴 id). 통과한 글에는 cat·headline·tag·why·pick·replaces를 붙여 pick 높은 순.
+    stored: 최근 저장된 글 — 같은 소식 재수집을 거르고 대체 관계를 판정하는 데 쓴다.
+    응답에서 빠진 id는 어느 쪽에도 넣지 않는다(다음 회차에 다시 판정)."""
     if not cands:
-        return []
+        return [], []
     live = [s for s in stored if not s.get("superseded_by")][-MAX_STORED:]
     stored_ids = {s["id"] for s in live}
     stored_txt = "\n".join(f"{s['id']} | {s['cat']} | {s['headline']}" for s in live) or "(없음)"
@@ -152,10 +153,13 @@ def classify(cands: list[dict], client, stored: list[dict] = ()) -> list[dict]:
     labels: dict[str, dict] = {}
     for r in data.get("results", []):
         labels.setdefault(r.get("id"), r)   # 같은 id가 두 번 오면 첫 답만
-    out = []
+    out, skipped = [], []
     for c in cands:
         r = labels.get(c["id"])
-        if not r or r.get("skip") or r.get("cat") not in CATS or not _clip(r.get("headline"), 1):
+        if not r:
+            continue
+        if r.get("skip") or r.get("cat") not in CATS or not _clip(r.get("headline"), 1):
+            skipped.append(c["id"])
             continue
         rep = r.get("replaces") or ""
         out.append(c | {
@@ -166,4 +170,4 @@ def classify(cands: list[dict], client, stored: list[dict] = ()) -> list[dict]:
             "pick": max(0, min(10, int(r.get("pick") or 0))),
             "replaces": rep if rep in stored_ids else None,
         })
-    return sorted(out, key=lambda c: -c["pick"])   # 안정 정렬 — 같은 점수는 입력 우선순위 유지
+    return sorted(out, key=lambda c: -c["pick"]), skipped   # 안정 정렬 — 같은 점수는 입력 우선순위 유지

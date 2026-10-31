@@ -1,10 +1,11 @@
 """매시간 진입점: 수집 → AI 필터 → 중복 제거 → 분류 → 상세 작성 → 저장(대체 반영) → 정리."""
 from __future__ import annotations
 
+import json
 import logging
 import os
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import classify, detail, store
@@ -15,17 +16,21 @@ log = logging.getLogger("collector")
 
 SOURCES = [("gn", gn), ("hn", hn), ("gpters", gpters), ("feeds", feeds), ("websearch", websearch)]
 DATA = Path(os.environ.get("DATA_DIR", Path(__file__).resolve().parents[1] / "data"))
+SKIP_MEMORY = timedelta(days=8)   # 피드 최대 수집 창(7일)보다 길게
 GROUP = {"gnp": "gn", "reddit": "websearch", "threads": "websearch", "web": "websearch",
          "pod": "feeds", "ph": "feeds", "nl": "feeds"}
 
 
 def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources=SOURCES) -> dict:
     now = now or datetime.now(timezone.utc)
-    items_path, status_path = data_dir / "items.json", data_dir / "status.json"
+    items_path, status_path, skipped_path = data_dir / "items.json", data_dir / "status.json", data_dir / "skipped.json"
     items = store.load_items(items_path)
+    # 분류에서 빠졌거나 근거가 부족했던 글 — 다시 보내지 않는다 (화면이 읽지 않는 별도 파일)
+    prev_skipped = json.loads(skipped_path.read_text(encoding="utf-8")) if skipped_path.exists() else {}
+    skipped = {k: v for k, v in prev_skipped.items() if now - store.parse_iso(v) < SKIP_MEMORY}
     ctx = Context(
         now=now,
-        known_ids={it["id"] for it in items},
+        known_ids={it["id"] for it in items} | set(skipped),
         run_index=int(now.timestamp() // 3600),
         search_api_key=os.environ.get("SEARCH_API_KEY") or None,
     )
@@ -51,7 +56,8 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
 
     # 2~3. AI 필터, 중복 제거, 우선순위
     filtered = classify.prefilter(cands)
-    fresh = store.rank_for_run(store.dedupe_candidates(filtered, items))[: classify.MAX_TO_CLASSIFY]
+    fresh = [c for c in store.dedupe_candidates(filtered, items) if c["id"] not in skipped]
+    fresh = store.rank_for_run(fresh)[: classify.MAX_TO_CLASSIFY]
     log.info("후보 %d → AI 필터 %d → 신규 %d", len(cands), len(filtered), len(fresh))
 
     # 4~5. 분류 → 상세 → 저장
@@ -65,9 +71,11 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
         log.warning(notes[-1])
     elif fresh:
         try:
-            labeled = classify.classify(fresh, client, store.recent(items, now, 24 * 7))
+            labeled, judged_out = classify.classify(fresh, client, store.recent(items, now, 24 * 7))
             labeled_n = len(labeled)
-            written, errors = detail.write_all(labeled[: store.MAX_PER_RUN], client)
+            written, errors, thin = detail.write_all(labeled[: store.MAX_PER_RUN], client)
+            for sid in judged_out + thin:
+                skipped[sid] = store.iso(now)
             if errors:
                 notes.append(f"상세 실패 {len(errors)}건: " + "; ".join(errors)[:300])
             items, added = store.add_items(items, written, now)
@@ -83,10 +91,11 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
         "last_run": store.iso(now),
         "sources": report,
         "run": {"candidates": len(cands), "ai_filtered": len(filtered), "new": len(fresh), "labeled": labeled_n,
-                "added": len(added), "total": len(items), **({"note": " / ".join(notes)} if notes else {})},
+                "added": len(added), "total": len(items), "skip_memory": len(skipped), **({"note": " / ".join(notes)} if notes else {})},
     }
     store.save_json(items_path, store.items_doc(items))
     store.save_json(status_path, new_status)
+    store.save_json(skipped_path, skipped)
     log.info("완료: 추가 %d, 전체 %d", len(added), len(items))
     return new_status
 

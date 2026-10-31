@@ -75,3 +75,23 @@ def test_http_retries_with_backoff(monkeypatch):
     except http.FetchError:
         pass
     assert len(attempts) == 3 and waits == [1.0, 2.0]
+
+
+def test_gpters_interleaves_spaces():
+    entries = [("https://www.gpters.org/nocode/post/a-1111111111", "2026-10-30T10:00:00Z"),
+               ("https://www.gpters.org/nocode/post/b-2222222222", "2026-10-30T09:00:00Z"),
+               ("https://www.gpters.org/nocode/post/c-3333333333", "2026-10-30T08:00:00Z"),
+               ("https://www.gpters.org/dev/post/d-4444444444", "2026-10-30T07:00:00Z")]
+    order = [u.rsplit("-", 1)[1][0] for u, _ in gpters.interleave_by_space(entries)]
+    assert order == ["1", "4", "2", "3"]
+
+
+def test_gpters_scans_past_old_posts(monkeypatch):
+    sm = (FX / "gpters_sitemap.xml").read_text(encoding="utf-8")
+    post = (FX / "gpters_post.html").read_text(encoding="utf-8")
+    old = post.replace("2026-10-30T10:48:40.977Z", "2025-01-01T00:00:00Z")
+    pages = iter([old, old] + [post] * 50)
+    monkeypatch.setattr(http, "get_text", lambda url, **kw: sm if url.endswith("sitemap.xml") else next(pages))
+    ctx = Context(now=NOW)
+    out = gpters.fetch(ctx, sleep=lambda s: None)
+    assert out and "48시간 초과 2" in ctx.notes["gpters"]

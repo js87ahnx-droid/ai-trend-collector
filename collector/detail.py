@@ -16,6 +16,8 @@ PROMPT = """너는 바쁜 실무자를 위한 AI 큐레이터다. 아래 글의 
 독자가 원문을 열지 않고도 바로 써먹을 수 있게 한국어로 정리하라.
 
 규칙:
+- insufficient: 원문을 읽지 못했고 수집된 본문만으로는 핵심 3가지를 사실대로 쓸 수 없으면 true
+  (그때 나머지 필드는 비워도 된다). 그 외엔 false.
 - 원문 문장을 그대로 옮기지 말고 직접 요약한다. 직접 인용 금지.
 - 원문에 없는 사실·숫자를 지어내지 않는다. 확인 못 한 부분은 쓰지 않는다.
 - headline: 원문을 읽고 우리 헤드라인이 틀렸거나 과장됐으면 고친 헤드라인(한국어 45자 이내), 맞으면 그대로.
@@ -39,6 +41,7 @@ PROMPT = """너는 바쁜 실무자를 위한 AI 큐레이터다. 아래 글의 
 SCHEMA = {
     "type": "object",
     "properties": {
+        "insufficient": {"type": "boolean"},
         "headline": {"type": "string"},
         "points": {"type": "array", "items": {"type": "string"}},
         "steps": {"type": "array", "items": {"type": "string"}},
@@ -71,9 +74,13 @@ SCHEMA = {
             "additionalProperties": False,
         },
     },
-    "required": ["headline", "points", "steps", "extra", "figure"],
+    "required": ["insufficient", "headline", "points", "steps", "extra", "figure"],
     "additionalProperties": False,
 }
+
+
+class Insufficient(classify.LLMError):
+    """정리할 근거가 부족한 글 — 다시 시도해도 같으므로 건너뛴 글로 기억한다."""
 
 
 def write(item: dict, client) -> dict:
@@ -93,6 +100,8 @@ def write(item: dict, client) -> dict:
         )
         if resp.stop_reason != "pause_turn":
             data = classify.final_json(resp)
+            if data.pop("insufficient", False):
+                raise Insufficient("원문을 읽지 못했고 본문이 부족함")
             headline = (data.pop("headline", "") or "").strip()
             fixed = {"headline": headline[:60]} if headline else {}
             return item | fixed | {"detail": data}
@@ -100,15 +109,22 @@ def write(item: dict, client) -> dict:
     raise classify.LLMError("pause_turn 반복 — 상세 작성 중단")
 
 
-def write_all(items: list[dict], client) -> tuple[list[dict], list[str]]:
-    """여러 글을 병렬로. 실패한 글은 빼고 (성공 목록, 실패 사유) 반환 — 다음 회차에 다시 시도된다."""
+def write_all(items: list[dict], client) -> tuple[list[dict], list[str], list[str]]:
+    """여러 글을 병렬로. (성공 목록, 실패 사유, 근거 부족 id).
+    실패한 글은 다음 회차에 다시 시도되고, 근거 부족 글은 호출한 쪽이 건너뛴 글로 기억한다."""
     def one(it):
         try:
             return write(it, client), None
+        except Insufficient:
+            log.info("근거 부족으로 건너뜀 %s", it["id"])
+            return None, ("insufficient", it["id"])
         except Exception as e:
             log.warning("상세 실패 %s: %s", it["id"], e)
             return None, f"{it['id']}: {type(e).__name__}: {e}"[:200]
 
     with ThreadPoolExecutor(max_workers=WORKERS) as pool:
         results = list(pool.map(one, items))
-    return [r for r, _ in results if r], [e for _, e in results if e]
+    ok = [r for r, _ in results if r]
+    errors = [e for _, e in results if isinstance(e, str)]
+    thin = [e[1] for _, e in results if isinstance(e, tuple)]
+    return ok, errors, thin
