@@ -12,8 +12,14 @@ WORKERS = 4
 WEB_FETCH = {"type": "web_fetch_20260209", "name": "web_fetch", "max_uses": 2, "max_content_tokens": 5000}
 MAX_CONTINUE = 3
 
-PROMPT = """너는 바쁜 실무자를 위한 AI 큐레이터다. 아래 글의 원문을 web_fetch로 읽고(실패하면 '수집된 본문'만 사용)
-독자가 원문을 열지 않고도 바로 써먹을 수 있게 한국어로 정리하라.
+PROMPT = """너는 AI에 관심 있는 일반 직장인을 위한 큐레이터다. 아래 글의 원문을 web_fetch로 읽고(실패하면 '수집된 본문'만 사용)
+독자가 원문을 열지 않고도 이해하고 바로 써먹을 수 있게 한국어로 정리하라.
+
+문체:
+- 독자는 개발자가 아닐 수도 있다. 관련 지식이 없는 성인이 한 번 읽고 이해할 수 있게 쓴다.
+  아이에게 말하듯 풀어 쓰지는 않는다. "~해요/~합니다"체, 짧은 문장.
+- 전문용어는 쉬운 말로 바꾸거나, 꼭 필요하면 그대로 쓰고 terms에서 풀이한다. 영어 약어를 늘어놓지 않는다.
+- 제품명·버전·숫자는 정확히 살린다.
 
 규칙:
 - insufficient: 원문을 읽지 못했고 수집된 본문만으로는 핵심 3가지를 사실대로 쓸 수 없으면 true
@@ -29,6 +35,8 @@ PROMPT = """너는 바쁜 실무자를 위한 AI 큐레이터다. 아래 글의 
   compare=전/후 또는 A/B 비교(before·after 각 70자 이내, 라벨 각 12자 이내), flow=단계 흐름(steps 2~5개, 각 12자 이내),
   bars=원문에 있는 수치 비교(bars 2~6개, unit), quote=화자의 핵심 주장 요지(text는 직접 인용이 아닌 요지, speaker).
   쓰지 않는 필드는 빈 문자열·빈 배열·0으로.
+- terms: 본문(headline·points·steps·extra)에 남은 전문용어 중 일반인이 모를 만한 것 0~3개.
+  term은 용어 그대로, meaning은 일상 비유를 곁들인 한 문장 풀이(60자 이내). 없으면 빈 배열.
 
 글:
 - 제목: {title}
@@ -73,8 +81,17 @@ SCHEMA = {
                          "steps", "unit", "bars", "text", "speaker"],
             "additionalProperties": False,
         },
+        "terms": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {"term": {"type": "string"}, "meaning": {"type": "string"}},
+                "required": ["term", "meaning"],
+                "additionalProperties": False,
+            },
+        },
     },
-    "required": ["insufficient", "headline", "points", "steps", "extra", "figure"],
+    "required": ["insufficient", "headline", "points", "steps", "extra", "figure", "terms"],
     "additionalProperties": False,
 }
 

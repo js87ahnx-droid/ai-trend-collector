@@ -217,3 +217,25 @@ def test_second_run_skips_known(tmp_path):
     client = FakeClient()
     st = main.run(NOW + timedelta(hours=1), tmp_path, client, sources=[("hn", Good)])
     assert client.calls == [] and st["run"]["added"] == 0
+
+
+def test_buzz_and_terms_saved_and_prompts_ask_plain_language(tmp_path, monkeypatch):
+    monkeypatch.delenv("SEARCH_API_KEY", raising=False)
+
+    def labels(kw):
+        out = label_all()(kw)
+        out["results"][0]["buzz"] = True
+        return out
+
+    terms = [{"term": "MCP", "meaning": "AI에 외부 자료를 꽂아 쓰게 하는 연결 방식이에요"}]
+    client = FakeClient(labels, lambda kw: msg(DETAIL | {"terms": terms}))
+    main.run(NOW, tmp_path, client, sources=[("hn", Good)])
+    items = {i["id"]: i for i in store.load_items(tmp_path / "items.json")}
+    assert items["hn-10"]["buzz"] is True and "buzz" not in items["hn-12"]
+    assert items["hn-10"]["detail"]["terms"] == terms
+    cls = client.classify_calls()[0]["messages"][0]["content"]
+    det = [c for c in client.calls if c.get("tools")][0]["messages"][0]["content"]
+    assert "세계적으로" in cls and "비전문가" in cls and "buzz" in cls
+    assert "terms" in det and "~해요/~합니다" in det
+    assert "buzz" in classify.CLASSIFY_SCHEMA["properties"]["results"]["items"]["required"]
+    assert "terms" in detail.SCHEMA["required"]
