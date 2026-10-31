@@ -1,22 +1,22 @@
 {
- "last_run": "2026-10-31T02:41:48Z",
+ "last_run": "2026-10-31T09:56:42Z",
  "sources": {
   "gn": {
-   "fetched": 46,
-   "kept": 1
+   "fetched": 44,
+   "kept": 0
   },
   "hn": {
    "fetched": 25,
-   "kept": 1
+   "kept": 3
   },
   "gpters": {
    "fetched": 4,
-   "note": "sitemap 16146 · 최근 71 · 페이지 24 · 메타 없음 0 · 48시간 초과 20 · 오류 0",
-   "kept": 4
+   "note": "sitemap 16148 · 최근 64 · 페이지 24 · 메타 없음 0 · 48시간 초과 20 · 오류 0",
+   "kept": 2
   },
   "feeds": {
-   "fetched": 42,
-   "kept": 4
+   "fetched": 43,
+   "kept": 5
   },
   "websearch": {
    "fetched": 0,
@@ -25,12 +25,12 @@
   }
  },
  "run": {
-  "candidates": 117,
+  "candidates": 116,
   "ai_filtered": 34,
-  "new": 12,
-  "labeled": 12,
+  "new": 16,
+  "labeled": 11,
   "added": 10,
-  "total": 37,
-  "skip_memory": 22
+  "total": 47,
+  "skip_memory": 27
  }
 }

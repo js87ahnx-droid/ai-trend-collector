@@ -1465,6 +1465,402 @@
    "origin": "ycombinator.com",
    "why": "구글·딥마인드 10년차 연구자의 커리어 선택과 연구 방향 인사이트",
    "pick": 3
+  },
+  {
+   "id": "pod-ec9e27ff9c",
+   "title": "Coding From the Himalayas With an Offline AI Agent",
+   "url": "https://latent.space/p/offline-coding/",
+   "source": "pod",
+   "cat": "tip",
+   "headline": "OpenCode+Ollama+Qwen으로 인터넷 없이 코딩 에이전트 돌리기",
+   "tag": "오프라인",
+   "detail": {
+    "points": [
+     "OpenCode는 에이전트, Ollama는 로컬 모델 실행을 맡으며, 모델은 Qwen3.5 9B를 쓴다.",
+     "모델·의존성·테스트 도구를 미리 받아두면 코드 설명, 버그 수정, 리팩터링을 오프라인으로 할 수 있다.",
+     "9B 모델은 내려받는 데 약 6.6~7.6GB가 필요하고, 메모리는 12~16GB 이상을 잡아두는 것이 좋다."
+    ],
+    "steps": [
+     "인터넷이 될 때 필자의 GitHub 저장소(RittikaJ/opencode-qwen-local-setup) README를 따라 OpenCode 1.19.4와 예제 프로젝트를 설치한다.",
+     "터미널 B에서 `OLLAMA_HOST=127.0.0.1:11434 OLLAMA_NO_CLOUD=1 OLLAMA_CONTEXT_LENGTH=65536 ollama serve`를 실행해 두고 창을 닫지 않는다.",
+     "터미널 A에서 `ollama pull qwen3.5:9b`로 모델을 받고, 끊기 전에 에이전트가 응답하는지 확인한다.",
+     "opencode.json에서 model과 small_model을 Qwen3.5 9B로 지정하고 baseURL을 http://127.0.0.1:11434/v1로 맞춘다. 웹 도구는 막고, 파일 편집과 명령 실행 전에는 승인을 받게 설정한다.",
+     "네트워크를 끊고 `python3 expense_total.py`를 실행해 버그를 확인한다(정답은 25.50인데 8.00이 나옴). 그다음 OpenCode에 수정과 테스트 실행을 맡긴다."
+    ],
+    "extra": "새 패키지 설치나 웹 검색은 오프라인에서 할 수 없습니다. 비슷한 방식을 원하면 Ollama를 지원하는 Aider도 대안입니다. 원문에 나온 벤치마크 수치는 모델 카드와 클라우드 기준 논문에서 가져온 값이라 실제 노트북 성능을 뜻하지 않습니다. 또 같은 논문에서 OpenCode는 Goose보다 문제 하나를 풀 때 토큰을 약 40배 썼습니다. 원문 후반부의 실제 수정 결과와 교훈은 수집 과정에서 잘려 이 요약에 넣지 못했습니다.",
+    "figure": {
+     "type": "flow",
+     "title": "오프라인 코딩 에이전트 구성 흐름",
+     "steps": [
+      "도구·모델 설치",
+      "Ollama 로컬 실행",
+      "opencode.json 설정",
+      "인터넷 끊기",
+      "에이전트에 작업"
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "latent.space",
+   "why": "비용·보안·네트워크 제약 없이 로컬 코딩 에이전트를 세팅하는 실전 가이드",
+   "pick": 7
+  },
+  {
+   "id": "hn-50290652",
+   "title": "AI, Lean, and the Future of Formal Verification, with Lean Creator Leo de Moura",
+   "url": "https://thedataexchange.media/leo-de-moura-lean-aws/",
+   "source": "hn",
+   "cat": "voice",
+   "headline": "AI가 코드를 짜면 검증은 누가? Lean 창시자가 본 형식 검증",
+   "tag": "인터뷰",
+   "detail": {
+    "points": [
+     "Lean은 코드와 성질, 증명을 함께 쓰고 작은 커널이 기계적으로 확인하는 도구라 테스트와 달리 '버그 없음'까지 보증할 수 있다.",
+     "요즘 프런티어 모델은 어느 언어로 쓴 코드든 Lean 모델로 옮기고 증명도 써서, 형식 검증의 확장성이 크게 높아졌다.",
+     "앞으로 엔지니어링의 중심은 코드 작성보다 명세와 모델, 원하는 속성을 정의하는 일로 옮겨 갈 것으로 본다."
+    ],
+    "steps": [
+     "먼저 코드가 지켜야 할 속성을 명세로 적는다. 예: zlib처럼 압축했다 풀면 원본 데이터가 그대로 나와야 한다는 성질.",
+     "AI에 그 속성을 만족하는 구현과 함께 Lean 증명도 작성하게 하고, 결과는 Lean이 기계적으로 검사하게 한다.",
+     "Rust 코드라면 Aeneas 도구로 Lean에서 검증한다. 마이크로소프트 SymCrypt 팀이 암호 라이브러리 검증에 쓴 방식이다.",
+     "다른 언어로 된 코드는 AI에 Lean 모델을 만들게 한 뒤, 모델과 실제 프로그램을 같은 입력으로 돌려 결과를 비교해 불일치를 찾는다.",
+     "가볍게 시작하려면 버그 찾기용으로 써 본다. `check Claude Code for bugs using Lean`처럼 요청만 해도 실제 버그를 찾은 사례가 있다.",
+     "증명을 사람에게 설명할 때는 Verso Blueprint로 자연어·LaTeX 설명과 Lean 증명을 나란히 맞춘다."
+    ],
+    "extra": "AI가 만든 Lean 모델이 실제 코드와 똑같이 동작하는지는 여전히 사람이 확인해야 합니다. 버그 찾기에는 잘 통하지만 '버그 없음'을 주장하려면 모델이 정확하고 코드와 계속 맞춰지는지까지 검토해야 합니다. 이 정리는 확보된 대화록 앞부분을 바탕으로 했습니다. 그래서 에이전트 검증, 커리어 변화 등 뒷부분 주제는 반영하지 못했습니다.",
+    "figure": {
+     "type": "bars",
+     "title": "Lean 증명 규모: 사람이 10년간 쓴 Mathlib vs AI가 쓴 증명",
+     "unit": "백만 줄",
+     "bars": [
+      {
+       "label": "Mathlib(사람, 10년)",
+       "value": 2.5
+      },
+      {
+       "label": "페르마 정리 증명(Anthropic AI)",
+       "value": 13
+      },
+      {
+       "label": "최근 공개된 AI 증명",
+       "value": 50
+      }
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "score": 26,
+   "comments": 1,
+   "origin": "thedataexchange.media",
+   "why": "AI 코드 신뢰성 확보 수단으로 형식 검증이 부상, 창시자 시각을 직접 들을 기회",
+   "pick": 5
+  },
+  {
+   "id": "ph-1299153",
+   "title": "AC Bridge",
+   "url": "https://www.producthunt.com/products/ac-bridge",
+   "source": "ph",
+   "cat": "tool",
+   "headline": "Claude Code·Codex 작업 상태를 스마트 조명·플러그로 보여주는 AC Bridge",
+   "tag": "알림",
+   "detail": {
+    "points": [
+     "이미 가진 스마트 조명·플러그를 Claude Code·Codex의 상태 표시기로 쓸 수 있습니다.",
+     "에이전트가 작업 중인지, 막혔는지, 끝났는지를 화면을 보지 않고도 한눈에 알 수 있습니다.",
+     "Claude Code나 Codex가 작업 단계의 하나로 연결된 기기를 직접 켜고 끌 수도 있습니다."
+    ],
+    "steps": [
+     "내 조명이 지원되는지 먼저 확인하세요. Hue, Govee, WLED, LIFX, Nanoleaf 등을 지원하고 Home Assistant와도 연동됩니다.",
+     "ac-bridge.com에 들어가 무료 옵션으로 시작할 수 있는지 확인하세요.",
+     "책상 근처 조명이나 플러그를 연결한 뒤, 작업 중·막힘·완료 상태가 조명에 잘 구분되어 보이는지 직접 확인하세요.",
+     "긴 작업을 맡겨 둔 동안 다른 일을 하다가, 조명이 막힘 상태를 표시하면 그때만 터미널로 돌아가세요.",
+     "필요하면 에이전트가 작업 중에 연결된 기기를 조작하는 단계를 넣어 활용해 보세요."
+    ],
+    "extra": "원문은 Product Hunt 출시 페이지라서 설치 방법, 상태별 색상 설정, 유료 요금제 내용은 나와 있지 않습니다. 직접 써 보기 전에 공식 사이트 문서를 확인하는 것이 좋습니다. Home Assistant를 이미 쓰고 있다면 기존 자동화와 함께 묶어 쓰기 쉬울 수 있습니다.",
+    "figure": {
+     "type": "flow",
+     "title": "에이전트 상태가 조명으로 이어지는 흐름",
+     "steps": [
+      "에이전트 작업",
+      "상태 감지",
+      "조명·플러그 표시",
+      "사용자 확인"
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "producthunt.com",
+   "why": "에이전트 대기 시간을 놓치지 않게 해주는 간단한 연동",
+   "pick": 5
+  },
+  {
+   "id": "ph-1299137",
+   "title": "Godwit",
+   "url": "https://www.producthunt.com/products/godwit",
+   "source": "ph",
+   "cat": "tool",
+   "headline": "Godwit: IMAP 메일에 쓰는 오픈소스 AI 데스크톱 메일 앱",
+   "tag": "오픈소스",
+   "detail": {
+    "points": [
+     "Godwit은 IMAP/SMTP를 지원하는 메일 계정이면 무엇이든 연결해 쓰는 오픈소스 데스크톱 메일 앱이다.",
+     "내장 AI 비서 Wit이 메일을 읽고, 요약하고, 번역하고, 답장 초안까지 써 준다.",
+     "어떤 AI 모델을 쓸지 사용자가 정할 수 있고, Product Hunt에는 무료로 등록돼 있다."
+    ],
+    "steps": [
+     "godwit.email에서 앱을 받거나 GitHub 저장소(godwit-email/godwit)에서 소스를 확인한다.",
+     "쓰고 있는 메일 계정을 IMAP/SMTP 방식으로 연결한다.",
+     "Wit이 사용할 AI 모델을 원하는 것으로 고른다.",
+     "읽기 길거나 외국어로 온 메일은 Wit에게 요약이나 번역을 맡겨 빠르게 파악한다.",
+     "답장은 Wit에게 초안을 받은 뒤 직접 검토하고 고쳐서 보낸다."
+    ],
+    "extra": "GitHub 저장소 기준으로 라이선스는 Apache-2.0이고 MCP 서버와 SDK 폴더가 들어 있지만, 이 기능들의 구체적인 사용법은 확인하지 못했습니다. 갓 출시돼 스타가 31개뿐인 초기 프로젝트라 업무 메일에 바로 쓰기 전에 충분히 시험해 보는 게 좋습니다. 비슷한 서비스로는 Superhuman, Shortwave, Inbox Zero 등이 있습니다.",
+    "figure": {
+     "type": "flow",
+     "title": "Godwit 사용 흐름",
+     "steps": [
+      "IMAP 계정 연결",
+      "AI 모델 선택",
+      "Wit 요약·번역",
+      "답장 초안 작성"
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "producthunt.com",
+   "why": "메일 처리에 AI를 붙이고 싶지만 데이터 통제가 필요한 사람에게 대안",
+   "pick": 5
+  },
+  {
+   "id": "ph-1298986",
+   "title": "Pluto Door",
+   "url": "https://www.producthunt.com/products/pluto-door",
+   "source": "ph",
+   "cat": "tool",
+   "headline": "Mac용 SSH 클라이언트 Pluto Door, 서버마다 AI 에이전트와 데스크톱 제공",
+   "tag": "서버관리",
+   "detail": {
+    "points": [
+     "AI 에이전트 Ori에게 서버 문제를 일상어로 물으면 원인을 찾아 쉽게 풀어서 설명해 준다.",
+     "명령어는 모두 먼저 보여 주고 사용자가 승인해야 실행되며, 수정한 파일은 되돌릴 수 있다.",
+     "Pluto XOS는 서버를 앱 15개가 든 데스크톱으로 바꿔 주고, Classic 모드는 터미널·파일 탐색기·편집기를 제공한다."
+    ],
+    "steps": [
+     "Mac에 Pluto Door를 설치하고 14일 무료 체험을 시작한다.",
+     "AWS·Google Cloud·Azure 서버나 직접 관리하는 서버를 등록한다. 서버 정보와 키는 내 Mac에만 저장된다.",
+     "Ori에게 문제 상황을 평소 말로 묻고, Ori가 내놓은 진단과 설명을 확인한다.",
+     "Ori가 제안한 명령어를 하나씩 검토한 뒤 승인한다. 결과가 이상하면 수정된 파일을 되돌린다.",
+     "정기 점검을 예약해 문제가 커지기 전에 알림을 받고, 필요한 소프트웨어는 Hangar로 클릭 한 번에 설치한다."
+    ],
+    "extra": "이 글은 Product Hunt 출시 페이지만 보고 정리했습니다. 이번이 두 번째 출시이고, Ori·Hangar·정기 점검이 이번에 추가된 기능입니다. 가격은 체험이 끝나면 월 $4.99, 연 $49.99, 또는 $59를 한 번 내고 이후 업데이트를 계속 받는 방식입니다. Ori가 쓰는 AI 모델이나 서버 데이터가 외부로 전송되는지는 원문에 나와 있지 않으니 보안 정책을 꼭 확인하세요.",
+    "figure": {
+     "type": "flow",
+     "title": "Ori로 서버 문제를 해결하는 흐름",
+     "steps": [
+      "일상어로 질문",
+      "원인 진단·설명",
+      "명령어 미리보기",
+      "승인 후 실행",
+      "필요 시 되돌리기"
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "producthunt.com",
+   "why": "여러 서버 운영을 AI 에이전트로 보조받고 싶은 개발자·운영자용",
+   "pick": 5
+  },
+  {
+   "id": "ph-1298903",
+   "title": "Agnos",
+   "url": "https://www.producthunt.com/products/agnos",
+   "source": "ph",
+   "cat": "tool",
+   "headline": "AI 입력용 문서를 정제하고 삭제된 부분까지 보여주는 Agnos",
+   "tag": "문서정제",
+   "detail": {
+    "points": [
+     "PDF·Word·Excel·PowerPoint·웹페이지를 AI 챗봇, RAG, 학습 데이터에 넣기 전에 정리해 준다.",
+     "머리글·바닥글, 쪽번호, 쿠키 배너, 상투 문구, 중복은 지우고 표·코드·숫자는 그대로 둔다.",
+     "지운 항목마다 어떤 규칙 때문인지 보여 주고, 해당 조각만 살리거나 그 규칙을 끌 수 있다."
+    ],
+    "steps": [
+     "Microsoft Store에서 Agnos를 설치한다. 14일 동안 무료로 써 볼 수 있다.",
+     "RAG나 챗봇에 넣으려는 PDF·Office 문서·웹페이지를 불러와서 정제한다.",
+     "삭제 목록에서 항목마다 적용된 규칙을 확인하고, 필요한 조각은 남겨 둔다.",
+     "너무 많이 지우는 규칙이 있으면 꺼 두고 다시 정제한다.",
+     "용도에 맞춰 JSONL 청크, 정제된 텍스트, 학습 데이터 중 하나로 내보낸다."
+    ],
+    "extra": "Windows PC에서만 돌아가고 파일을 외부로 올리지 않아서 사내 보안 문서를 다룰 때 유리합니다. 무료 체험이 끝나면 99달러를 한 번 내는 방식입니다. 출처가 Product Hunt 출시 페이지의 제품 소개뿐이라 실제 정제 품질이나 사용 후기는 확인하지 못했습니다.",
+    "figure": {
+     "type": "flow",
+     "title": "Agnos 문서 정제 흐름",
+     "steps": [
+      "문서 불러오기",
+      "잡음 자동 제거",
+      "삭제 규칙 검토",
+      "예외 복원·규칙 끄기",
+      "JSONL 등 내보내기"
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "producthunt.com",
+   "why": "RAG·프롬프트용 문서 전처리를 투명하게 검증할 수 있음",
+   "pick": 5
+  },
+  {
+   "id": "gpters-mei5qTTaScOvRoU",
+   "title": "AI로 만든 견적·미수금 엑셀, 110만원·40만원·70만원으로 검수하기",
+   "url": "https://www.gpters.org/data-science/post/aigenerated-estimates-receivables-excel-mei5qTTaScOvRoU",
+   "source": "gpters",
+   "cat": "tip",
+   "headline": "AI로 만든 견적·미수금 엑셀, 예시 금액 3개로 검수하라",
+   "tag": "엑셀",
+   "detail": {
+    "points": [
+     "표를 열기 전에 기대값을 먼저 손으로 정해 둔다. 예: 발행 110만원, 입금 40만원, 미수금 70만원.",
+     "미수금은 견적 금액이 아니라 거래명세서 발행분과 실제 입금액을 맞춰 보며 계산한다.",
+     "입금이 여러 행에 중복으로 들어갔는지, 거래처·문서번호를 고를 때 실수가 없는지 따로 확인한다."
+    ],
+    "steps": [
+     "가상 데이터 3행으로 시작해 기대값을 먼저 정한다. 예: 발행 합계 110만원, 입금 40만원이면 남는 미수금은 70만원.",
+     "견적 단계의 금액이 확정 거래(거래명세서 발행분)에 섞여 들어가지 않았는지 확인한다.",
+     "품목이 여러 행이면 입금도 행마다 나눠 적는다. 60만원과 50만원 두 행이라면 20만원씩 나눠 적어 잔액 합계가 70만원이 되는지 본다.",
+     "첫 출력물에 나온 거래처·품목·수량·단가·합계를 발행내역과 하나씩 대조한다.",
+     "AI에게 검수표를 맡길 때는 기대값과 확인 항목 3가지(견적과 확정 거래 구분, 입금 중복 집계, 출력 대조)를 알려준다. 파일을 직접 열어 계산하지 않았으면 통과로 적지 말라고 요청한다.",
+     "실제 고객의 이름·연락처·계좌는 가상 값으로 바꿔서 쓰고, 공개된 곳에 올리지 않는다."
+    ],
+    "extra": "필자는 Windows용 LibreOffice에서만 계산을 검증했고, Excel·Google Sheets·Mac·모바일 환경은 확인하지 않았습니다. 은행 연동 없이 입금액을 직접 입력하는 방식이라 실제 입금 여부는 따로 확인해야 합니다. 이 키트는 문서 한 장에 품목 12줄, 발행내역은 300행까지 처리합니다. 글 끝부분은 필자의 유료 초기 설정 서비스(149,000원) 홍보입니다.",
+    "figure": {
+     "type": "compare",
+     "title": "여러 행에 입금 입력: 중복 vs 배분",
+     "before": "두 행에 40만원씩 적으면 입금이 80만원으로 잡혀 미수금이 틀어진다",
+     "after": "40만원을 20만원씩 나누면 행 잔액 40만원+30만원, 합계 70만원으로 맞는다",
+     "before_label": "중복 입력",
+     "after_label": "행별 배분"
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "gpters.org",
+   "why": "AI가 만든 업무 엑셀의 계산 오류를 가상 숫자로 빠르게 잡는 방법",
+   "pick": 4
+  },
+  {
+   "id": "hn-50313989",
+   "title": "Show HN: Agent-arcade – Terminal games that pause when Claude Code/Codex is done",
+   "url": "https://github.com/Kuldeep-045/agent-arcade",
+   "source": "hn",
+   "cat": "tool",
+   "headline": "AI 코딩 에이전트 작업 완료·승인 요청 시 멈추는 터미널 게임",
+   "tag": "오픈소스",
+   "detail": {
+    "points": [
+     "AI 코딩 에이전트가 작업하는 동안 터미널에서 간단한 게임을 할 수 있는 도구다.",
+     "에이전트가 일을 끝내거나 승인을 요청하면 게임이 멈추고, 비프음과 메시지로 알려준다.",
+     "npm 패키지로 배포되며 Node 18 이상에서 돌아가고, 의존성이 없는 MIT 라이선스 오픈소스다."
+    ],
+    "steps": [
+     "Node.js 18 이상이 설치되어 있는지 확인한다.",
+     "npm에 agent-arcade라는 이름으로 올라온 패키지를 설치한다. 정확한 설치·실행 명령어는 GitHub README에서 확인한다.",
+     "Claude Code나 Codex에 작업을 맡긴 뒤 터미널에서 게임을 실행한다.",
+     "게임이 멈추고 비프음이 울리면 에이전트로 돌아가 결과를 확인하거나 승인 요청에 응답한다."
+    ],
+    "extra": "원문 페이지는 소개 부분까지만 읽을 수 있었습니다. 그래서 설치 명령어, 들어 있는 게임 목록, Claude Code·Codex와 연동하는 방식(훅 설정 등)은 확인하지 못했습니다. 실제로 쓰기 전에 README를 꼭 확인하세요. 승인 요청이 오면 바로 알려주기 때문에, 에이전트가 승인을 기다리며 멈춰 있는 시간을 줄이는 데 쓸모가 있습니다.",
+    "figure": {
+     "type": "flow",
+     "title": "agent-arcade 동작 흐름",
+     "steps": [
+      "에이전트 작업 시작",
+      "터미널 게임 플레이",
+      "완료·승인 요청",
+      "게임 멈춤·비프음",
+      "결과 확인·응답"
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "github.com",
+   "why": "에이전트 대기 중 딴짓하다 완료를 놓치는 문제를 재미있게 해결",
+   "pick": 4
+  },
+  {
+   "id": "gpters-jV65iZCWvrkqzxn",
+   "title": "4주차: 사업자 없이 기억정원 출시! 첫 매출은 아직 0원",
+   "url": "https://www.gpters.org/dev/post/week-4-memory-garden-jV65iZCWvrkqzxn",
+   "source": "gpters",
+   "cat": "biz",
+   "headline": "사업자 등록 없이 토스 미니앱 출시, 첫 매출은 아직 0원",
+   "tag": "토스 미니앱",
+   "detail": {
+    "points": [
+     "어르신용 기억 놀이 미니앱 '기억정원'은 검토 요청 당일 승인을 받았다.",
+     "로그인·결제 등을 쓰지 않는 앱은 사업자 등록 없이 토스에 출시할 수 있었다.",
+     "광고는 아직 붙이지 않아 4주차 매출은 0원이고, 광고 수익 구조를 먼저 정리했다."
+    ],
+    "steps": [
+     "내 앱이 토스 로그인, 인앱 결제, 토스페이, 프로모션, 비즈월렛을 쓰는지 확인한다. 하나도 안 쓰면 사업자 없이 출시할 수 있다.",
+     "콘솔 홈의 '약관 등록하기'는 토스 로그인 약관으로 가는 길이니 누르지 않는다.",
+     "출시 상태가 `WORKSPACE_TERMS_AGREEMENT_REQUIRED`로 나오면 앱 출시 → 버전 내역 → 출시하기에서 제휴 약관에 동의한다.",
+     "약관 동의 뒤 출시하기를 다시 눌러 전체 사용자에게 배포한다.",
+     "인앱 광고는 사업자 없이 시작하고, 예상수익이 3천 원쯤 되면 사업자 등록 준비를 시작한다.",
+     "예상수익은 노출수 × eCPM ÷ 1,000으로 계산하고, 콘솔 성과 화면(매일 오전 10시 갱신)에서 확인한다."
+    ],
+    "extra": "인앱 광고 가이드 한 페이지에는 사업자 등록이 먼저라고 나와 있어 헷갈리기 쉽다. 사업자 등록 문서를 끝까지 읽고, 그래도 애매하면 채널톡으로 묻는 편이 빠르다. 누적 예상수익이 5천 원에 이르면 5영업일 안에 사업자·정산 정보 등록과 승인까지 마쳐야 하고, 못 하면 앱 노출이 잠시 멈춘다. 면세 사업자는 등록할 수 없다.",
+    "figure": {
+     "type": "flow",
+     "title": "사업자 없이 출시부터 광고 수익까지",
+     "steps": [
+      "검토 승인",
+      "제휴 약관 동의",
+      "광고 없이 출시",
+      "광고 1곳 추가",
+      "3천원에 사업자 준비"
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "gpters.org",
+   "why": "광고·첫 매출 단계의 실제 시행착오를 미리 볼 수 있음",
+   "pick": 4
+  },
+  {
+   "id": "hn-50305218",
+   "title": "Show HN: Sketch Stadium – watch your agent play Pictionary",
+   "url": "https://sketch.wakeshift.ai/games/q5ucru",
+   "source": "hn",
+   "cat": "tool",
+   "headline": "AI 에이전트끼리 그리고 맞히는 그림 퀴즈, Sketch Stadium",
+   "tag": "실험",
+   "detail": {
+    "points": [
+     "매 라운드마다 에이전트 하나가 비밀 단어를 그리고, 나머지 에이전트가 그림을 보고 맞힙니다.",
+     "그림은 100×100 캔버스에 SVG 일부 기능과 11가지 색만으로 그리며, 글자와 숫자는 쓸 수 없습니다.",
+     "MCP 서버로 연결하는 방식이라 Claude Code, Codex, Cursor 같은 MCP 클라이언트라면 계정 없이 참여할 수 있습니다."
+    ],
+    "steps": [
+     "Claude Code를 쓴다면 `claude mcp add --transport http sketch-stadium https://sketch.wakeshift.ai/mcp`를 실행합니다.",
+     "Codex를 쓴다면 `codex mcp add sketch-stadium --url https://sketch.wakeshift.ai/mcp`를 실행합니다.",
+     "로그인 창이 뜨면 Authorize를 누릅니다. Claude Code에서 창이 뜨지 않으면 `/mcp`를 입력하고 sketch-stadium을 고른 뒤 Authenticate를 누릅니다.",
+     "에이전트에게 `Join a game of Sketch Stadium`이라고 요청합니다.",
+     "에이전트가 알려주는 관전 링크를 열면 경기를 실시간으로 볼 수 있습니다. 내 에이전트 대신 직접 추측을 입력할 수도 있고, 내 에이전트가 그릴 차례에는 제시어가 보입니다."
+    ],
+    "extra": "상품이 없는 재미용 게임이고, 게임 내용과 그림, 추측은 모두 공개됩니다. Claude Code는 백그라운드 모니터를 30분이 지나면 종료합니다. 그래서 에이전트가 25분마다 모니터를 다시 켜는데, 수동 권한 모드에서는 그때마다 승인을 요청받습니다. Wakeshift 훅을 설치하면 이런 반복 승인 없이 참여할 수 있으며, 설치는 선택 사항입니다.",
+    "figure": {
+     "type": "flow",
+     "title": "한 라운드 진행 방식",
+     "steps": [
+      "방 참가(최대 8명)",
+      "출제자가 그림",
+      "나머지가 추측",
+      "정답 시 둘 다 득점"
+     ]
+    }
+   },
+   "collected_at": "2026-10-31T09:56:42Z",
+   "origin": "sketch.wakeshift.ai",
+   "why": "에이전트의 시각·추론 능력을 재미있게 비교해볼 수 있는 놀이터",
+   "pick": 3
   }
  ]
 }
