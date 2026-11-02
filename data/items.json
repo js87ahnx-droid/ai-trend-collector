@@ -4087,6 +4087,157 @@
    "origin": "news.hada.io",
    "why": "Proton 사례로 AI 결과물도 검토·테스트 시간이 꼭 필요한 이유를 짚어 줘요",
    "pick": 3
+  },
+  {
+   "id": "hn-50330456",
+   "title": "AI delivers 'zero financial payoff' to most companies, Apollo economist says",
+   "url": "https://techcrunch.com/2026/10/25/ai-delivers-zero-financial-payoff-to-most-companies-according-to-apollo-economist/",
+   "source": "hn",
+   "cat": "voice",
+   "headline": "빅테크 제외 미국 대기업, AI로 수익 개선 없었다는 분석",
+   "tag": "경제 분석",
+   "detail": {
+    "points": [
+     "사모펀드 회사 아폴로의 수석 이코노미스트 토르스텐 슬록이 이런 분석 메모를 냈어요.",
+     "S&P 500에서 빅테크 7곳을 뺀 493개 기업은 이익률과 직원 1인당 매출이 제자리였어요.",
+     "슬록은 비즈니스의 핵심이 판단력인데 AI는 신뢰·책임·윤리를 이해하지 못한다고 봐요."
+    ],
+    "steps": [
+     "내 업무에서 AI가 맡는 일을 계산·초안 작성처럼 기계적인 일과 판단이 필요한 일로 나눠 보세요.",
+     "AI 도입 효과는 '써 봤다'로 끝내지 말고 처리 시간이나 매출 같은 숫자로 전후를 비교해 보세요.",
+     "고객 신뢰, 회사 문화, 윤리적 선택이 걸린 결정은 AI 결과를 참고만 하고 최종 판단은 사람이 내리세요.",
+     "회사에 AI 투자를 제안할 때는 기대 효과와 함께 수익으로 이어지는 구체적 경로를 설명해 보세요."
+    ],
+    "extra": "이 분석은 미국 대기업 전체 지표를 본 것이라 개별 회사나 개인의 생산성 향상까지 부정하는 것은 아니에요. 다만 최근 다른 연구들도 AI가 아직 생산성을 크게 높이지 못했다고 봐서, 도입 효과는 직접 측정해 보는 게 좋아요.",
+    "figure": {
+     "type": "quote",
+     "title": "슬록의 핵심 주장",
+     "text": "AI는 뛰어난 계산기일 수 있지만 사업 성과를 좌우하는 건 판단력이에요. AI는 책임·신뢰·문화·공정성을 이해하지 못해서, 값싸진 AI만으로 매출과 이익을 늘리기는 어려워요.",
+     "speaker": "토르스텐 슬록, 아폴로 글로벌 매니지먼트 수석 이코노미스트"
+    },
+    "terms": [
+     {
+      "term": "S&P 500",
+      "meaning": "미국 대표 대기업 500곳을 묶은 주가지수로, 미국 기업의 성적표와 같아요."
+     },
+     {
+      "term": "빅테크",
+      "meaning": "알파벳·아마존·애플·메타·마이크로소프트·엔비디아·테슬라 같은 거대 기술 기업이에요."
+     },
+     {
+      "term": "이익률",
+      "meaning": "매출 중 실제로 남는 돈의 비율로, 100원 팔아 얼마를 남겼는지를 뜻해요."
+     }
+    ]
+   },
+   "collected_at": "2026-11-02T02:44:05Z",
+   "score": 191,
+   "comments": 159,
+   "origin": "techcrunch.com",
+   "why": "Apollo 수석 이코노미스트의 주장으로 여러 곳에서 화제예요. AI 도입 기대치를 점검해 볼 만합니다.",
+   "pick": 5,
+   "buzz": true
+  },
+  {
+   "id": "gn-36426",
+   "title": "OpenQodex - 코딩 에이전트의 변경을 별도 에이전트가 검증하는 코드 리뷰 도구",
+   "url": "https://news.hada.io/topic?id=36426&utm_source=geeknews&utm_medium=rss&utm_campaign=news",
+   "source": "gn",
+   "cat": "tool",
+   "headline": "AI가 고친 코드를 다른 AI가 한 번 더 검사해 주는 OpenQodex",
+   "tag": "코드 검토",
+   "detail": {
+    "points": [
+     "코딩 AI가 바꾼 코드를 Claude Code나 Codex를 따로 하나 더 띄워 다시 검토합니다.",
+     "내장 검사기 22개가 비밀키 노출, 보안 약점, SQL 같은 위험 요소를 찾아냅니다.",
+     "문제를 찾는 단계와 확인하는 단계를 나눠서, 잘못 짚은 지적을 걸러냅니다."
+    ],
+    "steps": [
+     "지금 쓰고 있는 Claude Code나 Codex 계정이 있는지 확인합니다. 이미 로그인된 계정을 그대로 씁니다.",
+     "내 컴퓨터가 macOS나 Linux인지 확인합니다. 현재는 이 두 운영체제만 지원합니다.",
+     "기본 설정에서는 아직 서버에 올리지 않은 변경과 저장하지 않은 변경을 모두 검사합니다. 필요하면 특정 브랜치, 변경 요청, 저장소 전체로 범위를 넓힙니다.",
+     "결과는 HTML 보고서로 보는 것이 가장 편합니다. 바뀐 부분과 문제 카드가 함께 나옵니다. 고칠 문제를 골라 AI에게 수정을 맡길 수 있습니다.",
+     "서버에 올리기 전에 경고를 받도록 설정합니다. 심각한 문제가 있으면 올리지 못하게 막을 수도 있습니다. 프로젝트별 검토 지침과 제외 규칙도 정해 둡니다."
+    ],
+    "extra": "Claude Code, Codex, Cursor, Cline에서 쓸 수 있어요. 다만 실제 검토를 맡는 AI는 Claude Code와 Codex 두 가지뿐입니다. 코드 간 연결 관계를 보여 주는 지도도 만들어 주는데, 이 지도를 만들 때는 AI를 부르지 않아요. Apache-2.0 라이선스로 공개된 무료 도구입니다. 원문 소개글에는 설치 명령어가 나오지 않아요. 설치 방법은 GitHub 저장소(openqodex/openqodex)에서 확인해야 합니다.",
+    "figure": {
+     "type": "flow",
+     "title": "OpenQodex 검토 흐름",
+     "steps": [
+      "AI가 코드 수정",
+      "검사기 22개 점검",
+      "별도 AI가 검증",
+      "보고서·수정 요청"
+     ]
+    },
+    "terms": [
+     {
+      "term": "코딩 에이전트",
+      "meaning": "지시만 하면 스스로 코드를 읽고 고치는 AI예요. 일을 알아서 처리하는 대리인 같은 존재입니다."
+     },
+     {
+      "term": "Claude Code·Codex",
+      "meaning": "각각 Anthropic과 OpenAI가 만든 코딩 AI 도구예요. 여기서는 검토를 맡는 다른 AI로 쓰입니다."
+     },
+     {
+      "term": "브랜치",
+      "meaning": "원본을 건드리지 않고 따로 작업하는 사본이에요. 문서를 복사해서 따로 고쳐 보는 것과 비슷합니다."
+     }
+    ]
+   },
+   "collected_at": "2026-11-02T02:44:05Z",
+   "origin": "news.hada.io",
+   "why": "쓰던 Claude Code·Codex 계정으로 비밀키 노출 같은 실수를 미리 잡아 줘요.",
+   "pick": 4
+  },
+  {
+   "id": "hn-50331415",
+   "title": "Show HN: Better Together – AI agents team up against spam calls and texts",
+   "url": "https://better-together.fun/",
+   "source": "hn",
+   "cat": "tool",
+   "headline": "내 AI 비서가 스팸을 신고하고, 여러 신고를 모아 패턴을 찾는 Better Together",
+   "tag": "스팸 차단",
+   "detail": {
+    "points": [
+     "스팸을 직접 막아 주지는 않아요. 내 AI 비서가 스팸 문자·전화를 찾아 대신 신고하는 서비스예요.",
+     "여러 사람의 신고를 AI가 모아 같은 문구, 링크, 회신 번호를 찾아내요.",
+     "AI가 관련 업체에 보낼 이메일 초안을 쓰고, 실제 발송 전에 창업자가 직접 검토해요."
+    ],
+    "steps": [
+     "Claude, ChatGPT 같은 AI 비서에 `Set up Better Together: https://better-together.fun/llms.txt`를 붙여 넣어요.",
+     "설정이 막히면 사이트에 있는 설정 안내(Setup guide) 페이지를 참고해요.",
+     "AI가 읽을 수 없는 문자나 음성메일은 내용을 직접 알려 주고 신고해 달라고 부탁해요.",
+     "처음에는 AI가 신고 전에 매번 물어봐요. 확실한 스팸은 바로 신고해도 된다고 알려 두면 편해요.",
+     "나중에 AI 비서에게 내 신고가 어떻게 처리됐는지 물어보면 진행 상황을 알려 줘요."
+    ],
+    "extra": "사이트에 따르면 Claude Code, Claude, ChatGPT, Grok, Muse에서 시험해 봤어요. 신고 내용은 Better Together에만 저장되고, 정부 기관에 민원을 넣는 것은 아니에요. 보상이나 스팸이 사라진다는 약속도 없어요. 신고에는 내 전화번호가 빠지고, 신고한 내용은 언제든 지울 수 있어요.",
+    "figure": {
+     "type": "flow",
+     "title": "신고 이후 처리 흐름",
+     "steps": [
+      "AI 비서가 신고",
+      "AI가 패턴 분석",
+      "창업자가 검토",
+      "관련 업체에 연락",
+      "진행 상황 알림"
+     ]
+    },
+    "terms": [
+     {
+      "term": "AI 에이전트(AI 비서)",
+      "meaning": "말로 부탁하면 알아서 일을 대신 처리해 주는 AI예요. 비서에게 심부름을 맡기는 것과 비슷해요."
+     },
+     {
+      "term": "패턴",
+      "meaning": "여러 신고에서 반복되는 공통점이에요. 같은 사기 전단이 여러 집에 붙어 있는 걸 알아채는 것과 같아요."
+     }
+    ]
+   },
+   "collected_at": "2026-11-02T02:44:05Z",
+   "origin": "better-together.fun",
+   "why": "매일 시달리는 스팸 전화와 문자를 AI로 걸러내는 새로운 시도예요.",
+   "pick": 4
   }
  ]
 }

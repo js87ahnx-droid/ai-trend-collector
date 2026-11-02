@@ -1,13 +1,13 @@
 {
- "last_run": "2026-11-01T23:02:24Z",
+ "last_run": "2026-11-02T02:44:05Z",
  "sources": {
   "gn": {
-   "fetched": 40,
+   "fetched": 37,
    "kept": 1
   },
   "hn": {
-   "fetched": 27,
-   "kept": 0
+   "fetched": 28,
+   "kept": 2
   },
   "gpters": {
    "fetched": 0,
@@ -25,12 +25,12 @@
   }
  },
  "run": {
-  "candidates": 91,
-  "ai_filtered": 12,
-  "new": 2,
-  "labeled": 1,
-  "added": 1,
-  "total": 79,
-  "skip_memory": 48
+  "candidates": 89,
+  "ai_filtered": 14,
+  "new": 7,
+  "labeled": 3,
+  "added": 3,
+  "total": 82,
+  "skip_memory": 52
  }
 }
