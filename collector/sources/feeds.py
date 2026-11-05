@@ -1,4 +1,4 @@
-"""공개 RSS/Atom 피드 — 팟캐스트 인터뷰(pod), Product Hunt(ph), 뉴스레터(nl), Show HN(hn)."""
+"""공개 RSS/Atom 피드 — 팟캐스트 인터뷰(pod), Product Hunt(ph), 뉴스레터(nl), AI 매체·공식 발표(news), Show HN(hn)."""
 from __future__ import annotations
 
 import hashlib
@@ -13,6 +13,7 @@ from .base import MAX_PER_SOURCE, Context, raw
 
 ATOM = "{http://www.w3.org/2005/Atom}"
 CONTENT = "{http://purl.org/rss/1.0/modules/content/}encoded"
+KST = timezone(timedelta(hours=9))
 
 
 @dataclass(frozen=True)
@@ -22,6 +23,7 @@ class Feed:
     source: str
     max_items: int
     max_age: timedelta
+    tz: timezone = timezone.utc   # 날짜에 시간대가 안 적힌 피드의 시간대
 
 
 FEEDS = (
@@ -33,13 +35,20 @@ FEEDS = (
     Feed("bensbites", "https://www.bensbites.com/feed", "nl", 5, timedelta(days=7)),
     Feed("ycblog", "https://www.ycombinator.com/blog/rss", "nl", 5, timedelta(days=7)),
     Feed("showhn", "https://news.ycombinator.com/showrss", "hn", MAX_PER_SOURCE, timedelta(hours=48)),
+    Feed("aitimes", "https://www.aitimes.com/rss/allArticle.xml", "news", 3, timedelta(hours=24), KST),
+    Feed("openai", "https://openai.com/news/rss.xml", "news", 3, timedelta(days=7)),
+    Feed("googleai", "https://blog.google/technology/ai/rss/", "news", 3, timedelta(days=7)),
+    Feed("techcrunch", "https://techcrunch.com/category/artificial-intelligence/feed/", "news", 3, timedelta(hours=48)),
+    Feed("rundown", "https://www.therundown.ai/feed", "nl", 3, timedelta(days=7)),
+    Feed("oneuseful", "https://www.oneusefulthing.org/feed", "nl", 3, timedelta(days=7)),
+    Feed("simonw", "https://simonwillison.net/atom/everything/", "nl", 3, timedelta(hours=48)),
 )
 
 HN_ITEM = re.compile(r"news\.ycombinator\.com/item\?id=(\d+)")
 PH_POST = re.compile(r"Post/(\d+)")
 
 
-def _date(s: str | None) -> datetime | None:
+def _date(s: str | None, tz: timezone = timezone.utc) -> datetime | None:
     if not s:
         return None
     s = s.strip()
@@ -50,10 +59,10 @@ def _date(s: str | None) -> datetime | None:
             dt = parsedate_to_datetime(s)
         except (TypeError, ValueError):
             return None
-    return dt if dt.tzinfo else dt.replace(tzinfo=timezone.utc)
+    return dt if dt.tzinfo else dt.replace(tzinfo=tz)
 
 
-def parse(xml_text: str) -> list[dict]:
+def parse(xml_text: str, tz: timezone = timezone.utc) -> list[dict]:
     """RSS 2.0·Atom 공통: [{title, link, guid, published, summary, comments}]"""
     root = ET.fromstring(xml_text)
     out = []
@@ -62,7 +71,7 @@ def parse(xml_text: str) -> list[dict]:
             "title": e.findtext("title", ""),
             "link": (e.findtext("link") or "").strip(),
             "guid": (e.findtext("guid") or "").strip(),
-            "published": _date(e.findtext("pubDate")),
+            "published": _date(e.findtext("pubDate"), tz),
             "summary": e.findtext("description") or e.findtext(CONTENT) or "",
             "comments": (e.findtext("comments") or "").strip(),
         })
@@ -72,7 +81,7 @@ def parse(xml_text: str) -> list[dict]:
             "title": e.findtext(f"{ATOM}title", ""),
             "link": (link or "").strip(),
             "guid": (e.findtext(f"{ATOM}id") or "").strip(),
-            "published": _date(e.findtext(f"{ATOM}published") or e.findtext(f"{ATOM}updated")),
+            "published": _date(e.findtext(f"{ATOM}published") or e.findtext(f"{ATOM}updated"), tz),
             "summary": e.findtext(f"{ATOM}content") or e.findtext(f"{ATOM}summary") or "",
             "comments": "",
         })
@@ -101,7 +110,7 @@ def to_raw(entry: dict, feed: Feed) -> dict | None:
 
 def fetch_feed(feed: Feed, ctx: Context) -> list[dict]:
     out = []
-    for e in parse(http.get_text(feed.url, timeout=25)):
+    for e in parse(http.get_text(feed.url, timeout=25), feed.tz):
         if not e["published"] or ctx.now - e["published"] > feed.max_age:
             continue
         r = to_raw(e, feed)

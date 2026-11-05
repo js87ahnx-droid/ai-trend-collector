@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 SCHEMA_VERSION = 2
-SOURCES = ("gn", "gnp", "hn", "reddit", "threads", "gpters", "web", "pod", "ph", "nl")
+SOURCES = ("gn", "gnp", "hn", "reddit", "threads", "gpters", "web", "pod", "ph", "nl", "news")
 CATS = ("tip", "tool", "biz", "voice", "shift")
 MAX_PER_RUN = 10
 RETENTION = timedelta(days=7)

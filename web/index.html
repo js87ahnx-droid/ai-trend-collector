@@ -121,7 +121,7 @@ details.health td{padding:3px 8px 3px 0;border-top:1px solid var(--line);vertica
 const CATS = [["tip", "활용 팁"], ["tool", "써볼 만한 도구"], ["biz", "사업 아이디어"], ["voice", "전문가 이야기"], ["shift", "업데이트 소식"]];
 const CAT = Object.fromEntries(CATS);
 const SRC = {gn: "긱뉴스", gnp: "GN⁺", hn: "Hacker News", reddit: "Reddit", threads: "Threads", gpters: "GPTERS",
-             web: "웹", pod: "팟캐스트", ph: "Product Hunt", nl: "뉴스레터"};
+             web: "웹", pod: "팟캐스트", ph: "Product Hunt", nl: "뉴스레터", news: "뉴스"};
 const LATE_MS = 2 * 3600e3, POLL_MS = 5 * 60e3, PICK_WINDOW_MS = 48 * 3600e3, CAT_KEY = "ai-trend-cat";
 const state = {items: [], status: null, loaded: false, error: null, cat: "all"};
 try { const c = localStorage.getItem(CAT_KEY); if (c === "all" || CAT[c]) state.cat = c; } catch (_) {}
