@@ -9,16 +9,16 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import classify, detail, store
-from .sources import feeds, gn, gpters, hn, websearch
+from .sources import feeds, gn, gpters, hn, threadsearch, websearch
 from .sources.base import Context
 
 log = logging.getLogger("collector")
 
-SOURCES = [("gn", gn), ("hn", hn), ("gpters", gpters), ("feeds", feeds), ("websearch", websearch)]
+SOURCES = [("gn", gn), ("hn", hn), ("gpters", gpters), ("feeds", feeds), ("websearch", websearch), ("threads", threadsearch)]
 DATA = Path(os.environ.get("DATA_DIR", Path(__file__).resolve().parents[1] / "data"))
 SKIP_MEMORY = timedelta(days=8)   # 피드 최대 수집 창(7일)보다 길게
-GROUP = {"gnp": "gn", "reddit": "websearch", "threads": "websearch", "web": "websearch",
-         "pod": "feeds", "ph": "feeds", "nl": "feeds"}
+GROUP = {"gnp": "gn", "reddit": "websearch", "web": "websearch",
+         "pod": "feeds", "ph": "feeds", "nl": "feeds", "news": "feeds"}
 
 
 def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources=SOURCES) -> dict:
@@ -28,11 +28,16 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
     # 분류에서 빠졌거나 근거가 부족했던 글 — 다시 보내지 않는다 (화면이 읽지 않는 별도 파일)
     prev_skipped = json.loads(skipped_path.read_text(encoding="utf-8")) if skipped_path.exists() else {}
     skipped = {k: v for k, v in prev_skipped.items() if now - store.parse_iso(v) < SKIP_MEMORY}
+    prev_status = store.load_status(status_path)
+    if client is None and os.environ.get("ANTHROPIC_API_KEY"):
+        client = classify.make_client()
     ctx = Context(
         now=now,
         known_ids={it["id"] for it in items} | set(skipped),
         run_index=int(now.timestamp() // 3600),
         search_api_key=os.environ.get("SEARCH_API_KEY") or None,
+        client=client,
+        threads_searched_at=prev_status.get("threads_searched_at"),
     )
 
     # 1. 수집 — 소스별로 실패를 가둔다
@@ -51,6 +56,8 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
         report["feeds"]["note"] = "; ".join(ctx.notes["feeds"])[:300]
     if ctx.notes.get("gpters") and "gpters" in report:
         report["gpters"]["note"] = ctx.notes["gpters"][:300]
+    if ctx.notes.get("threads") and "threads" in report:
+        report["threads"]["note"] = ctx.notes["threads"][:300]
     if not ctx.search_api_key and "websearch" in report:
         report["websearch"]["note"] = "SEARCH_API_KEY 없음 — 건너뜀"
 
@@ -64,8 +71,6 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
     added: list[dict] = []
     notes: list[str] = []
     labeled_n = 0
-    if client is None and os.environ.get("ANTHROPIC_API_KEY"):
-        client = classify.make_client()
     if client is None:
         notes.append("ANTHROPIC_API_KEY 없음 — 분류·저장 건너뜀")
         log.warning(notes[-1])
@@ -90,6 +95,7 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
     new_status = {
         "last_run": store.iso(now),
         "sources": report,
+        "threads_searched_at": ctx.notes.get("threads_searched_at") or prev_status.get("threads_searched_at"),
         "run": {"candidates": len(cands), "ai_filtered": len(filtered), "new": len(fresh), "labeled": labeled_n,
                 "added": len(added), "total": len(items), "skip_memory": len(skipped), **({"note": " / ".join(notes)} if notes else {})},
     }

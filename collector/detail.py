@@ -107,6 +107,7 @@ def write(item: dict, client) -> dict:
     prompt = PROMPT.format(style=STYLE, title=item["title"], headline=item["headline"], cat=item["cat"], url=item["url"],
                            body=(item.get("body") or item.get("excerpt") or "(없음)")[:3000])
     messages = [{"role": "user", "content": prompt}]
+    tools = {} if item.get("source") == "threads" else {"tools": [WEB_FETCH]}   # 스레드 글은 페이지를 열지 않는다
     for _ in range(MAX_CONTINUE):
         resp = client.beta.messages.create(
             model=classify.MODEL,
@@ -114,7 +115,7 @@ def write(item: dict, client) -> dict:
             betas=["server-side-fallback-2026-07-01"],
             fallbacks="default",
             output_config={"effort": "medium", "format": {"type": "json_schema", "schema": SCHEMA}},
-            tools=[WEB_FETCH],
+            **tools,
             messages=messages,
         )
         if resp.stop_reason != "pause_turn":
