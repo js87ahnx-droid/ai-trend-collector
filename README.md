@@ -34,7 +34,7 @@ python -m venv .venv && .venv/Scripts/pip install -r requirements.txt -r require
 | `hn` | Hacker News 공식 API, topstories 상위 30 |
 | `gpters` | 게시판 목록(`/c/`)은 robots.txt 차단 → 공간별 `sitemap.xml`의 최근 48시간 글 최대 12건, 게시글 og 메타(제목·설명·게시일)만 읽음 |
 | `reddit` / `threads` / `web` | Brave Search `freshness=pd`, 회차당 6회 호출. 제목·스니펫·URL·게시일만 사용, 원문 미방문 |
-| `threads` | Claude 웹검색(threads.com 한정), 11시간 간격으로 2회 검색. 제목·URL만 사용, 글 코드의 게시 시각으로 7일 초과분 제외, 원문 미방문 (시험 운영) |
+| `threads` | AI 공개 프로필 6곳을 헤드리스 Chromium으로 11시간 간격으로 읽음. 3일 안의 글, 계정당 최대 3건. 로그인 화면·차단이 나오면 우회하지 않고 다음 차례까지 쉼 (개인 용도, 시험 운영) |
 | `news` / `nl` | RSS — AI타임스·OpenAI·구글 AI·TechCrunch AI / The Rundown·One Useful Thing·Simon Willison |
 
 ## 운영 체크리스트 대응

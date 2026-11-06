@@ -16,8 +16,7 @@ class Context:
     known_ids: set[str] = field(default_factory=set)
     run_index: int = 0          # 회차 번호 — 검색 키워드 순환에 사용
     search_api_key: str | None = None
-    client: object = None       # Claude API 클라이언트 — 스레드 웹검색에 사용
-    threads_searched_at: str | None = None   # 마지막 스레드 검색 시각
+    threads_searched_at: str | None = None   # 마지막으로 스레드 프로필을 연 시각
     notes: dict = field(default_factory=dict)   # 소스가 남기는 부분 실패 메모 (status에 기록)
 
 

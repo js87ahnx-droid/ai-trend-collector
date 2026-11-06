@@ -9,12 +9,12 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from . import classify, detail, store
-from .sources import feeds, gn, gpters, hn, threadsearch, websearch
+from .sources import feeds, gn, gpters, hn, threadprofile, websearch
 from .sources.base import Context
 
 log = logging.getLogger("collector")
 
-SOURCES = [("gn", gn), ("hn", hn), ("gpters", gpters), ("feeds", feeds), ("websearch", websearch), ("threads", threadsearch)]
+SOURCES = [("gn", gn), ("hn", hn), ("gpters", gpters), ("feeds", feeds), ("websearch", websearch), ("threads", threadprofile)]
 DATA = Path(os.environ.get("DATA_DIR", Path(__file__).resolve().parents[1] / "data"))
 SKIP_MEMORY = timedelta(days=8)   # 피드 최대 수집 창(7일)보다 길게
 GROUP = {"gnp": "gn", "reddit": "websearch", "web": "websearch",
@@ -36,7 +36,6 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
         known_ids={it["id"] for it in items} | set(skipped),
         run_index=int(now.timestamp() // 3600),
         search_api_key=os.environ.get("SEARCH_API_KEY") or None,
-        client=client,
         threads_searched_at=prev_status.get("threads_searched_at"),
     )
 

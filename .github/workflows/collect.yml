@@ -45,6 +45,13 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: python -m collector.rewrite
 
+      - name: Install browser when Threads is due
+        if: github.event_name != 'push'
+        run: |
+          if python -m collector.sources.threadprofile data; then
+            pip install playwright && playwright install --with-deps chromium || echo "브라우저 설치 실패 — 스레드만 건너뜀"
+          fi
+
       - name: Collect
         if: github.event_name != 'push'
         env:
