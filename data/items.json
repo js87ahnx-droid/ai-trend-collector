@@ -11945,6 +11945,111 @@
    "origin": "producthunt.com",
    "why": "팀에서 AI 비용이 불어날 때 사용량과 안전장치를 함께 챙길 수 있어요.",
    "pick": 2
+  },
+  {
+   "id": "gn-36707",
+   "title": "Show GN: K-Humanizer - 한국어 글에서 번역투를 덜어내는 Agent Skill",
+   "url": "https://news.hada.io/topic?id=36707&utm_source=geeknews&utm_medium=rss&utm_campaign=news",
+   "source": "gn",
+   "cat": "tool",
+   "headline": "AI가 쓴 한국어 글의 번역투를 덜어내는 무료 도구 K-Humanizer",
+   "tag": "무료",
+   "detail": {
+    "points": [
+     "K-Humanizer는 AI로 쓴 이력서, 업무 메일, 제품 안내의 어색한 번역투를 다듬어 줍니다.",
+     "Cursor, Claude, Codex에서 쓸 수 있고, 누구나 쓸 수 있는 MIT 라이선스로 무료 공개됐습니다.",
+     "이번 버전은 글자를 얼마나 바꿀지에 대한 제한을 없앴고, 고친 문장의 뜻이 그대로인지 확인하게 바꿨습니다."
+    ],
+    "steps": [
+     "Cursor, Claude, Codex 가운데 쓰고 있는 AI 도구를 하나 고릅니다.",
+     "터미널(명령어 입력 창)에 `npx skills add evergreentree97/K-Humanizer --skill k-humanizer --full-depth`를 입력해 설치합니다.",
+     "한국어·영어로 된 README에서 사용법을 확인합니다.",
+     "평가 문서에 실린 합성 예시로 먼저 시험해 보고, 결과가 어떤지 살펴봅니다.",
+     "다듬은 글에서 '~만' 같은 조건이나 예외가 빠지지 않았는지 꼭 다시 읽어 봅니다.",
+     "예외가 빠지거나 업무 용어가 어색하게 바뀐 사례가 있으면, 실제 업무 자료 대신 짧은 예시로 만들어 제작자에게 알려 줍니다."
+    ],
+    "extra": "문장을 줄이다 보면 뜻이 달라질 수 있습니다. 예를 들어 '담당 상담사를 통해서만 접수'에서 '만'을 빼면 접수 규칙 자체가 바뀝니다. 그래서 최종본은 사람이 직접 확인하는 것이 안전합니다. 피드백을 보낼 때 회사의 실제 문서를 올리지 말라는 점도 기억해 두세요.",
+    "figure": {
+     "type": "compare",
+     "title": "줄여도 되는 말 vs 남겨야 하는 말",
+     "before": "'작성 중인 내용의 임시 저장을 수행합니다' → '임시 저장'으로 줄여도 충분",
+     "after": "'상담사를 통해서만 접수' → '만'을 빼면 규칙이 바뀌므로 남겨야 함",
+     "before_label": "줄여도 됨",
+     "after_label": "남겨야 함"
+    },
+    "terms": [
+     {
+      "term": "번역투",
+      "meaning": "외국어를 옮긴 듯한 딱딱한 말투예요. 교과서 직역처럼 어색하게 들려요."
+     },
+     {
+      "term": "Agent Skill",
+      "meaning": "AI 도우미에게 붙이는 추가 기능 묶음이에요. 스마트폰에 앱을 깔듯이 설치해요."
+     },
+     {
+      "term": "MIT 라이선스",
+      "meaning": "무료로 쓰고 고치고 나눌 수 있게 허락하는 공개 약속이에요."
+     }
+    ]
+   },
+   "collected_at": "2026-11-06T15:07:07Z",
+   "origin": "news.hada.io",
+   "why": "이력서·업무 메일의 어색한 문장을 뜻은 그대로 두고 자연스럽게 다듬어 줘요.",
+   "pick": 6
+  },
+  {
+   "id": "gn-36706",
+   "title": "Show GN: product design_harness - 아이디어부터 기획, 와이어프레임, 프로토타입 검증까지 연결하는 AI 하네스",
+   "url": "https://news.hada.io/topic?id=36706&utm_source=geeknews&utm_medium=rss&utm_campaign=news",
+   "source": "gn",
+   "cat": "tool",
+   "headline": "AI가 먼저 질문하고 기획→화면 설계→시제품 검증까지 잇는 도구",
+   "tag": "오픈소스",
+   "detail": {
+    "points": [
+     "아이디어를 넣으면 AI가 먼저 질문을 던져 제품의 맥락과 필요한 기능을 구체화해요.",
+     "기획, 와이어프레임, 직접 눌러보는 시제품, 사용성 검증을 순서대로 진행해요.",
+     "검증 결과를 보고 시제품을 다시 고치는 반복 과정까지 하나의 흐름으로 묶었어요."
+    ],
+    "steps": [
+     "GitHub의 pentaxzs/productdesign_harness 저장소를 프로젝트마다 따로 복제해요.",
+     "Claude Code나 Codex에서 그 폴더를 열어요.",
+     "Claude Code라면 `/wire` 명령으로 실행하고 제품 아이디어를 입력해요.",
+     "AI가 묻는 질문에 답하며 목표와 요구사항을 구체화해요.",
+     "Figma MCP를 연결하면 Figma에 1-Pager와 와이어프레임이 만들어져요. 연결하지 않으면 Markdown·HTML 파일로 진행돼요.",
+     "검증 담당 AI의 평가를 보고 시제품을 고치는 과정을 반복해요."
+    ],
+    "extra": "실제 서비스를 개발하는 완성형 도구가 아니에요. 초기 아이디어를 구체화하고 검증하는 데 초점을 둔 개인 프로젝트예요. 기획 문서의 품질과 Figma 연동의 실용성은 아직 개선 중이라고 제작자가 직접 밝혔어요.",
+    "figure": {
+     "type": "flow",
+     "title": "하네스 작업 흐름",
+     "steps": [
+      "AI의 질문",
+      "기획",
+      "와이어프레임",
+      "시제품",
+      "사용성 검증"
+     ]
+    },
+    "terms": [
+     {
+      "term": "와이어프레임",
+      "meaning": "화면에 무엇을 어디에 둘지 선으로만 그린 건물 평면도 같은 밑그림이에요."
+     },
+     {
+      "term": "Figma MCP",
+      "meaning": "AI가 디자인 도구 Figma를 직접 다룰 수 있게 이어 주는 연결 장치예요."
+     },
+     {
+      "term": "하네스",
+      "meaning": "AI가 정해진 순서대로 일하도록 묶어 둔 작업 틀로, 말에 채우는 마구와 비슷해요."
+     }
+    ]
+   },
+   "collected_at": "2026-11-06T15:07:07Z",
+   "origin": "news.hada.io",
+   "why": "화면부터 그리다 실패하던 기획을 질문·검증 단계로 차근차근 정리해 줘요.",
+   "pick": 5
   }
  ]
 }
