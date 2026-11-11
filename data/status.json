@@ -1,22 +1,22 @@
 {
- "last_run": "2026-11-11T16:44:55Z",
+ "last_run": "2026-11-11T23:03:14Z",
  "sources": {
   "gn": {
    "fetched": 20,
-   "kept": 3
+   "kept": 2
   },
   "hn": {
    "fetched": 28,
-   "kept": 2
+   "kept": 4
   },
   "gpters": {
-   "fetched": 1,
-   "note": "sitemap 16177 · 최근 56 · 페이지 24 · 메타 없음 0 · 48시간 초과 23 · 오류 0",
-   "kept": 1
+   "fetched": 0,
+   "note": "sitemap 16177 · 최근 54 · 페이지 24 · 메타 없음 0 · 48시간 초과 24 · 오류 0",
+   "kept": 0
   },
   "feeds": {
-   "fetched": 66,
-   "kept": 4
+   "fetched": 55,
+   "kept": 3
   },
   "websearch": {
    "fetched": 0,
@@ -25,18 +25,17 @@
   },
   "threads": {
    "fetched": 0,
-   "error": "Error: BrowserType.launch: Executable doesn't exist at /home/runner/.cache/ms-playwright/chromium_headless_shell-1254/chrome-headless-shell-linux64/chrome-headless-shell\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Pl",
    "kept": 0
   }
  },
  "threads_searched_at": "2026-11-11T16:44:55Z",
  "run": {
-  "candidates": 115,
-  "ai_filtered": 43,
-  "new": 40,
-  "labeled": 30,
-  "added": 10,
-  "total": 239,
-  "skip_memory": 346
+  "candidates": 103,
+  "ai_filtered": 35,
+  "new": 33,
+  "labeled": 21,
+  "added": 9,
+  "total": 238,
+  "skip_memory": 349
  }
 }
