@@ -1,5 +1,5 @@
 {
- "last_run": "2026-11-14T06:59:02Z",
+ "last_run": "2026-11-14T12:02:13Z",
  "sources": {
   "gn": {
    "fetched": 20,
@@ -10,12 +10,12 @@
    "kept": 0
   },
   "gpters": {
-   "fetched": 2,
-   "note": "sitemap 16198 · 최근 55 · 페이지 24 · 메타 없음 0 · 48시간 초과 22 · 오류 0",
+   "fetched": 3,
+   "note": "sitemap 16199 · 최근 56 · 페이지 24 · 메타 없음 0 · 48시간 초과 21 · 오류 0",
    "kept": 0
   },
   "feeds": {
-   "fetched": 42,
+   "fetched": 45,
    "kept": 0
   },
   "websearch": {
@@ -24,19 +24,20 @@
    "kept": 0
   },
   "threads": {
-   "fetched": 0,
+   "fetched": 6,
+   "note": "프로필 6곳 중 6곳 읽음 · 새 글 6건",
    "kept": 0
   }
  },
- "threads_searched_at": "2026-11-13T23:51:20Z",
+ "threads_searched_at": "2026-11-14T12:02:13Z",
  "run": {
-  "candidates": 91,
-  "ai_filtered": 28,
-  "new": 25,
+  "candidates": 101,
+  "ai_filtered": 40,
+  "new": 39,
   "labeled": 0,
   "added": 0,
-  "total": 208,
-  "skip_memory": 383,
-  "note": "분류 실패: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Ch2PV2MGyLBMwL7t7k468'}"
+  "total": 201,
+  "skip_memory": 366,
+  "note": "분류 실패: ClaudeCodeError: claude 실행 실패(1): {\"duration_api_ms\":0,\"stop_reason\":\"stop_sequence\",\"session_id\":\"07122920-e5a6-4751-b9d4-2e8bd4171535\",\"total_cost_usd\":0,\"usage\":{\"output_tokens_details\":{\"thinking_tokens\":0},\"input_tokens\":0,\"cache_creation_input_tokens\":0,\"cache_read_input_tokens\":0,\"outp"
  }
 }
