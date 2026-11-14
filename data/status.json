@@ -1,13 +1,13 @@
 {
- "last_run": "2026-11-14T14:28:35Z",
+ "last_run": "2026-11-14T19:27:51Z",
  "sources": {
   "gn": {
    "fetched": 20,
-   "kept": 0
+   "kept": 3
   },
   "hn": {
-   "fetched": 26,
-   "kept": 0
+   "fetched": 30,
+   "kept": 2
   },
   "gpters": {
    "fetched": 0,
@@ -15,8 +15,8 @@
    "kept": 0
   },
   "feeds": {
-   "fetched": 45,
-   "kept": 0
+   "fetched": 44,
+   "kept": 3
   },
   "websearch": {
    "fetched": 0,
@@ -30,13 +30,12 @@
  },
  "threads_searched_at": "2026-11-14T12:02:13Z",
  "run": {
-  "candidates": 91,
-  "ai_filtered": 33,
-  "new": 28,
-  "labeled": 0,
-  "added": 0,
-  "total": 210,
-  "skip_memory": 376,
-  "note": "분류 실패: ClaudeCodeError: claude 실행 실패(1): success: You've hit your session limit · resets 4pm (UTC)"
+  "candidates": 94,
+  "ai_filtered": 38,
+  "new": 32,
+  "labeled": 27,
+  "added": 8,
+  "total": 209,
+  "skip_memory": 339
  }
 }
