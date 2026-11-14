@@ -78,7 +78,12 @@ def _run(args: list[str], prompt: str) -> str:
         p = subprocess.run(args, input=prompt, capture_output=True, text=True, encoding="utf-8",
                            cwd=cwd, env=env(), timeout=TIMEOUT)
     if p.returncode != 0:
-        raise ClaudeCodeError(f"claude 실행 실패({p.returncode}): {(p.stdout or p.stderr)[:300]}")
+        try:
+            out = json.loads(p.stdout)
+            why = f"{out.get('subtype')}: {out.get('result')}"
+        except (json.JSONDecodeError, AttributeError):
+            why = p.stdout or p.stderr
+        raise ClaudeCodeError(f"claude 실행 실패({p.returncode}): {why[:300]}")
     return p.stdout
 
 
