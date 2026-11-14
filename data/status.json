@@ -1,22 +1,22 @@
 {
- "last_run": "2026-11-13T23:51:20Z",
+ "last_run": "2026-11-14T06:59:02Z",
  "sources": {
   "gn": {
    "fetched": 20,
-   "kept": 2
+   "kept": 0
   },
   "hn": {
-   "fetched": 28,
-   "kept": 2
+   "fetched": 27,
+   "kept": 0
   },
   "gpters": {
-   "fetched": 0,
-   "note": "sitemap 16196 · 최근 53 · 페이지 24 · 메타 없음 0 · 48시간 초과 24 · 오류 0",
+   "fetched": 2,
+   "note": "sitemap 16198 · 최근 55 · 페이지 24 · 메타 없음 0 · 48시간 초과 22 · 오류 0",
    "kept": 0
   },
   "feeds": {
-   "fetched": 39,
-   "kept": 1
+   "fetched": 42,
+   "kept": 0
   },
   "websearch": {
    "fetched": 0,
@@ -24,20 +24,19 @@
    "kept": 0
   },
   "threads": {
-   "fetched": 4,
-   "note": "프로필 6곳 중 6곳 읽음 · 새 글 4건",
-   "kept": 3
+   "fetched": 0,
+   "kept": 0
   }
  },
  "threads_searched_at": "2026-11-13T23:51:20Z",
  "run": {
   "candidates": 91,
-  "ai_filtered": 30,
+  "ai_filtered": 28,
   "new": 25,
-  "labeled": 13,
-  "added": 8,
-  "total": 213,
-  "skip_memory": 396,
-  "note": "상세 실패 1건: hn-50485592: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans "
+  "labeled": 0,
+  "added": 0,
+  "total": 208,
+  "skip_memory": 383,
+  "note": "분류 실패: BadRequestError: Error code: 400 - {'type': 'error', 'error': {'type': 'invalid_request_error', 'message': 'Your credit balance is too low to access the Anthropic API. Please go to Plans & Billing to upgrade or purchase credits.'}, 'request_id': 'req_011Ch2PV2MGyLBMwL7t7k468'}"
  }
 }
