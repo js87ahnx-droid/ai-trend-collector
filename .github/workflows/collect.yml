@@ -46,7 +46,11 @@ jobs:
 
       - name: Install Claude Code (구독 토큰으로 호출)
         if: github.event_name != 'push'
-        run: npm install -g @anthropic-ai/claude-code@2.1.292 && claude --version   # 옵션을 확인한 버전으로 고정
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+        run: |
+          npm install -g @anthropic-ai/claude-code@2.1.292 && claude --version   # 옵션을 확인한 버전으로 고정
+          python -c "from collector.claude_code import token_shape; print('토큰', token_shape())"
 
       - name: Rewrite stored items
         if: github.event_name == 'workflow_dispatch' && inputs.rewrite

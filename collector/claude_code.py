@@ -37,7 +37,18 @@ def build_args(*, model: str, schema: dict | None, tools: list[dict] | None) -> 
 
 def env() -> dict:
     """API 키가 남아 있으면 Claude Code가 그 키를 먼저 써서 구독 토큰이 무시되므로 뺀다. 다른 비밀값도 넘기지 않는다."""
-    return {k: v for k, v in os.environ.items() if k not in HIDDEN_ENV}
+    e = {k: v for k, v in os.environ.items() if k not in HIDDEN_ENV}
+    if e.get("CLAUDE_CODE_OAUTH_TOKEN"):   # 붙여넣을 때 섞인 줄바꿈·공백 제거
+        e["CLAUDE_CODE_OAUTH_TOKEN"] = "".join(e["CLAUDE_CODE_OAUTH_TOKEN"].split())
+    return e
+
+
+def token_shape() -> str:
+    """토큰 값은 드러내지 않고 모양만 — 등록 실수(다른 키, 잘린 값) 진단용."""
+    raw = os.environ.get("CLAUDE_CODE_OAUTH_TOKEN") or ""
+    clean = "".join(raw.split())
+    kind = next((p for p in ("sk-ant-oat", "sk-ant-api", "sk-ant-") if clean.startswith(p)), "알 수 없음")
+    return f"종류={kind} 길이={len(clean)} 공백·줄바꿈={'있음' if clean != raw else '없음'}"
 
 
 def parse(stdout: str, want_json: bool) -> tuple[str, str]:
