@@ -25,7 +25,7 @@ concurrency:
 jobs:
   collect:
     runs-on: ubuntu-latest
-    timeout-minutes: 45   # Claude Code 호출 한 번 최대 5분 × (분류 1 + 상세 10건/4병렬 3묶음)
+    timeout-minutes: 90   # 수집: 호출 최대 5분 × (분류 1 + 상세 10건/4병렬 3묶음). 다시 쓰기 회차는 수집을 건너뛰고 저장된 글 전체를 처리
     steps:
       - uses: actions/checkout@v4
 
@@ -62,7 +62,7 @@ jobs:
           fi
 
       - name: Collect
-        if: github.event_name != 'push'
+        if: github.event_name != 'push' && !inputs.rewrite
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           SEARCH_API_KEY: ${{ secrets.SEARCH_API_KEY }}
@@ -96,9 +96,11 @@ jobs:
       - run: |
           python3 - <<'EOF'
           import json, sys
-          note = json.load(open("data/status.json", encoding="utf-8")).get("run", {}).get("note", "")
+          run = json.load(open("data/status.json", encoding="utf-8")).get("run", {})
+          note = run.get("note", "")
           print(note or "정상")
-          sys.exit(1 if ("분류 실패" in note or "건너뜀" in note) else 0)
+          broken = "분류 실패" in note or "건너뜀" in note or ("상세 실패" in note and not run.get("added"))
+          sys.exit(1 if broken else 0)
           EOF
 
   deploy:

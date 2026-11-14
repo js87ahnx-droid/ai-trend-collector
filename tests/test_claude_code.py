@@ -33,7 +33,7 @@ def test_structured_output_becomes_text_block():
     args, prompt = calls[0]
     assert prompt == "프롬프트"
     assert json.loads(args[args.index("--json-schema") + 1]) == SCHEMA
-    assert args[args.index("--model") + 1] == "claude-opus-5-5"
+    assert args[1:3] == ["-p", "--model"] and args[args.index("--model") + 1] == "claude-opus-5-5"
     assert args[args.index("--tools") + 1] == ""          # 도구 없음
     assert "--allowedTools" not in args and "--safe-mode" in args
 

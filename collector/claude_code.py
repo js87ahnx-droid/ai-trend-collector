@@ -7,13 +7,15 @@ from __future__ import annotations
 
 import json
 import os
+import shutil
 import subprocess
 import tempfile
 from types import SimpleNamespace
 
 TIMEOUT = 300   # 한 호출 상한 — 회차 전체가 job 시간 제한 안에 끝나게
 SERVER_TOOLS = {"web_fetch": "WebFetch"}   # API 서버 도구 → Claude Code 내장 도구
-HIDDEN_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "SEARCH_API_KEY", "GITHUB_TOKEN", "GH_TOKEN")
+HIDDEN_ENV = ("ANTHROPIC_API_KEY", "ANTHROPIC_AUTH_TOKEN", "ANTHROPIC_BASE_URL", "CLAUDE_CODE_USE_BEDROCK",
+              "CLAUDE_CODE_USE_VERTEX", "SEARCH_API_KEY", "GITHUB_TOKEN", "GH_TOKEN")
 
 
 class ClaudeCodeError(Exception):
@@ -23,7 +25,7 @@ class ClaudeCodeError(Exception):
 def build_args(*, model: str, schema: dict | None, tools: list[dict] | None) -> list[str]:
     names = [SERVER_TOOLS[t["name"]] for t in tools or [] if t.get("name") in SERVER_TOOLS]
     uses = sum(t.get("max_uses", 2) for t in tools or [] if t.get("name") in SERVER_TOOLS)
-    args = ["claude", "-p", "--model", model, "--safe-mode", "--no-session-persistence",
+    args = [shutil.which("claude") or "claude", "-p", "--model", model, "--safe-mode", "--no-session-persistence",
             "--permission-prompts", "none", "--output-format", "json",
             "--tools", ",".join(names), "--max-turns", str(uses + 5)]
     if names:
@@ -75,8 +77,8 @@ def _run(args: list[str], prompt: str) -> str:
     with tempfile.TemporaryDirectory() as cwd:
         p = subprocess.run(args, input=prompt, capture_output=True, text=True, encoding="utf-8",
                            cwd=cwd, env=env(), timeout=TIMEOUT)
-    if p.returncode != 0 and not p.stdout.strip():
-        raise ClaudeCodeError(f"claude 실행 실패({p.returncode}): {p.stderr[:300]}")
+    if p.returncode != 0:
+        raise ClaudeCodeError(f"claude 실행 실패({p.returncode}): {(p.stdout or p.stderr)[:300]}")
     return p.stdout
 
 
