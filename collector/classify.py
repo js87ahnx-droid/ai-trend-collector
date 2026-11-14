@@ -105,7 +105,16 @@ def prefilter(cands: list[dict]) -> list[dict]:
     return out
 
 
+def has_credentials() -> bool:
+    return bool(os.environ.get("CLAUDE_CODE_OAUTH_TOKEN") or os.environ.get("ANTHROPIC_API_KEY"))
+
+
 def make_client():
+    """구독 토큰이 있으면 Claude Code CLI를 거치고, 없으면 API 키로 SDK를 쓴다."""
+    if os.environ.get("CLAUDE_CODE_OAUTH_TOKEN"):
+        from .claude_code import ClaudeCodeClient
+
+        return ClaudeCodeClient()
     import anthropic
 
     return anthropic.Anthropic(max_retries=3)

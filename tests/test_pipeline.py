@@ -188,9 +188,10 @@ def test_run_replacement_marks_old(tmp_path):
 
 def test_run_without_key_still_updates_last_run(tmp_path, monkeypatch):
     monkeypatch.delenv("ANTHROPIC_API_KEY", raising=False)
+    monkeypatch.delenv("CLAUDE_CODE_OAUTH_TOKEN", raising=False)
     st = main.run(NOW, tmp_path, None, sources=[("hn", Good)])
     assert st["last_run"] == "2026-10-30T12:37:00Z"
-    assert "ANTHROPIC_API_KEY" in st["run"]["note"]
+    assert st["run"]["note"] == "CLAUDE_CODE_OAUTH_TOKEN·ANTHROPIC_API_KEY 없음 — 분류·저장 건너뜀"
     assert store.load_items(tmp_path / "items.json") == []
 
 

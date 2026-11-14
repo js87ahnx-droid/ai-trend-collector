@@ -11,7 +11,8 @@
 
 | 이름 | 용도 | 없으면 |
 |---|---|---|
-| `ANTHROPIC_API_KEY` | 분류·헤드라인·원문 읽고 상세 작성 (기본 모델 `claude-opus-5-5`) | 수집만 하고 저장 안 함 (`last_run`만 갱신) |
+| `CLAUDE_CODE_OAUTH_TOKEN` | 분류·헤드라인·원문 읽고 상세 작성 (기본 모델 `claude-opus-5-5`). `claude setup-token`으로 만든 구독 토큰, Claude Code CLI(`claude -p`)를 거쳐 호출 | 수집만 하고 저장 안 함 (`last_run`만 갱신) |
+| `ANTHROPIC_API_KEY` | 토큰이 없을 때만 쓰는 예비 경로(SDK 직접 호출). 워크플로에는 넘기지 않음 | — |
 | `SEARCH_API_KEY` | Brave Search API — Reddit·Threads·웹 보완 | 웹검색 단계 건너뜀 |
 
 모델 교체: 워크플로 `env`에 `ANTHROPIC_MODEL`을 추가.

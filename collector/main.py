@@ -29,7 +29,7 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
     prev_skipped = json.loads(skipped_path.read_text(encoding="utf-8")) if skipped_path.exists() else {}
     skipped = {k: v for k, v in prev_skipped.items() if now - store.parse_iso(v) < SKIP_MEMORY}
     prev_status = store.load_status(status_path)
-    if client is None and os.environ.get("ANTHROPIC_API_KEY"):
+    if client is None and classify.has_credentials():
         client = classify.make_client()
     ctx = Context(
         now=now,
@@ -71,7 +71,7 @@ def run(now: datetime | None = None, data_dir: Path = DATA, client=None, sources
     notes: list[str] = []
     labeled_n = 0
     if client is None:
-        notes.append("ANTHROPIC_API_KEY 없음 — 분류·저장 건너뜀")
+        notes.append("CLAUDE_CODE_OAUTH_TOKEN·ANTHROPIC_API_KEY 없음 — 분류·저장 건너뜀")
         log.warning(notes[-1])
     elif fresh:
         try:
