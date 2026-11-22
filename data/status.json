@@ -1,22 +1,22 @@
 {
- "last_run": "2026-11-22T17:22:55Z",
+ "last_run": "2026-11-22T22:46:54Z",
  "sources": {
   "gn": {
    "fetched": 20,
-   "kept": 1
+   "kept": 4
   },
   "hn": {
    "fetched": 28,
-   "kept": 4
+   "kept": 1
   },
   "gpters": {
    "fetched": 0,
-   "note": "sitemap 16200 · 최근 43 · 페이지 24 · 메타 없음 0 · 48시간 초과 24 · 오류 0",
+   "note": "sitemap 0 · 최근 0 · 페이지 0 · 메타 없음 0 · 48시간 초과 0 · 오류 0",
    "kept": 0
   },
   "feeds": {
-   "fetched": 39,
-   "kept": 5
+   "fetched": 35,
+   "kept": 2
   },
   "websearch": {
    "fetched": 0,
@@ -24,18 +24,19 @@
    "kept": 0
   },
   "threads": {
-   "fetched": 0,
-   "kept": 0
+   "fetched": 4,
+   "note": "프로필 6곳 중 6곳 읽음 · 새 글 4건",
+   "kept": 3
   }
  },
- "threads_searched_at": "2026-11-22T08:47:17Z",
+ "threads_searched_at": "2026-11-22T22:46:54Z",
  "run": {
   "candidates": 87,
-  "ai_filtered": 19,
-  "new": 18,
-  "labeled": 11,
+  "ai_filtered": 21,
+  "new": 21,
+  "labeled": 16,
   "added": 10,
   "total": 217,
-  "skip_memory": 296
+  "skip_memory": 294
  }
 }
