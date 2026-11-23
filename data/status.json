@@ -1,13 +1,13 @@
 {
- "last_run": "2026-11-22T22:46:54Z",
+ "last_run": "2026-11-23T03:58:54Z",
  "sources": {
   "gn": {
    "fetched": 20,
-   "kept": 4
+   "kept": 5
   },
   "hn": {
    "fetched": 28,
-   "kept": 1
+   "kept": 4
   },
   "gpters": {
    "fetched": 0,
@@ -15,8 +15,8 @@
    "kept": 0
   },
   "feeds": {
-   "fetched": 35,
-   "kept": 2
+   "fetched": 43,
+   "kept": 1
   },
   "websearch": {
    "fetched": 0,
@@ -24,19 +24,18 @@
    "kept": 0
   },
   "threads": {
-   "fetched": 4,
-   "note": "프로필 6곳 중 6곳 읽음 · 새 글 4건",
-   "kept": 3
+   "fetched": 0,
+   "kept": 0
   }
  },
  "threads_searched_at": "2026-11-22T22:46:54Z",
  "run": {
-  "candidates": 87,
-  "ai_filtered": 21,
-  "new": 21,
-  "labeled": 16,
+  "candidates": 91,
+  "ai_filtered": 24,
+  "new": 23,
+  "labeled": 13,
   "added": 10,
-  "total": 217,
-  "skip_memory": 294
+  "total": 210,
+  "skip_memory": 277
  }
 }
